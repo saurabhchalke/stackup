@@ -30,6 +30,7 @@ export const List = ({
     <SectionList
       w="100%"
       px="18px"
+      stickySectionHeadersEnabled={false}
       refreshControl={
         <RefreshControl
           refreshing={Boolean(isRefreshing)}

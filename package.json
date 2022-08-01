@@ -54,7 +54,8 @@
       "**/react-native-gesture-handler",
       "**/@react-native-clipboard/clipboard",
       "**/@ramp-network/react-native-sdk",
-      "**/react-native-randombytes"
+      "**/react-native-randombytes",
+      "**/react-native-inappbrowser-reborn"
     ]
   },
   "devDependencies": {

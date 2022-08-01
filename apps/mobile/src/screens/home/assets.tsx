@@ -7,7 +7,14 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faSliders} from '@fortawesome/free-solid-svg-icons/faSliders';
 import {faBars} from '@fortawesome/free-solid-svg-icons/faBars';
 import {faQrcode} from '@fortawesome/free-solid-svg-icons/faQrcode';
-import {RootStackParamList, HomeTabParamList, AppColors} from '../../config';
+import {
+  RootStackParamList,
+  HomeTabParamList,
+  AppColors,
+  CurrencyCategoryList,
+  CurrencyMeta,
+  CurrencySymbols,
+} from '../../config';
 import {
   TabScreenContainer,
   TabScreenHeader,
@@ -22,6 +29,7 @@ import {
   useSettingsStoreAssetsSelector,
   useWalletStoreAssetsSelector,
   useExplorerStoreAssetsSelector,
+  useBrowserStoreAssetsSelector,
 } from '../../state';
 import {logEvent} from '../../utils/analytics';
 
@@ -52,6 +60,7 @@ export default function AssetsScreen({}: Props) {
     currencies,
     fetchAddressOverview,
   } = useExplorerStoreAssetsSelector();
+  const {openBrowser} = useBrowserStoreAssetsSelector();
 
   const currencySet = useMemo(
     () => new Set(enabledCurrencies),
@@ -96,6 +105,42 @@ export default function AssetsScreen({}: Props) {
     );
   };
 
+  const onCurrencyPress = (currency: CurrencySymbols) => () => {
+    openBrowser(CurrencyMeta[currency]?.externalLink ?? '');
+  };
+
+  const renderAssetsSections = () => {
+    return CurrencyCategoryList.map(category => ({
+      title: category,
+      data: currencies
+        .filter(
+          currency =>
+            currencySet.has(currency.currency) &&
+            CurrencyMeta[currency.currency].category === category,
+        )
+        .map(currency => (
+          <PortfolioItem
+            key={currency.currency}
+            currency={currency.currency}
+            quoteCurrency={currency.quoteCurrency}
+            balance={currency.balance}
+            previousBalanceInQuoteCurrency={
+              currency.previousBalanceInQuoteCurrency
+            }
+            currentBalanceInQuoteCurrency={
+              currency.currentBalanceInQuoteCurrency
+            }
+            isHidden={isHidden}
+            onPress={
+              CurrencyMeta[currency.currency].externalLink
+                ? onCurrencyPress(currency.currency)
+                : undefined
+            }
+          />
+        )),
+    })).filter(section => section.data.length);
+  };
+
   return (
     <TabScreenContainer>
       <TabScreenHeader>
@@ -130,28 +175,7 @@ export default function AssetsScreen({}: Props) {
             </HStack>
           </Box>
         }
-        sections={[
-          {
-            title: '',
-            data: currencies
-              .filter(currency => currencySet.has(currency.currency))
-              .map(currency => (
-                <PortfolioItem
-                  key={currency.currency}
-                  currency={currency.currency}
-                  quoteCurrency={currency.quoteCurrency}
-                  balance={currency.balance}
-                  previousBalanceInQuoteCurrency={
-                    currency.previousBalanceInQuoteCurrency
-                  }
-                  currentBalanceInQuoteCurrency={
-                    currency.currentBalanceInQuoteCurrency
-                  }
-                  isHidden={isHidden}
-                />
-              )),
-          },
-        ]}
+        sections={renderAssetsSections()}
         footer={
           <Button
             key="assets-footer"
