@@ -44,6 +44,7 @@ export const CurrencyMeta: Record<CurrencySymbols, CurrencyMeta> = {
     decimals: 18,
     logo: EthereumLogo,
     category: 'Cryptocurrency',
+    externalLink: 'https://www.stackup.sh/learn/eth',
   },
   MATIC: {
     name: 'Matic',
@@ -51,6 +52,7 @@ export const CurrencyMeta: Record<CurrencySymbols, CurrencyMeta> = {
     decimals: 18,
     logo: PolygonLogo,
     category: 'Cryptocurrency',
+    externalLink: 'https://www.stackup.sh/learn/matic',
   },
   BTC: {
     name: 'Bitcoin',
@@ -58,5 +60,6 @@ export const CurrencyMeta: Record<CurrencySymbols, CurrencyMeta> = {
     decimals: 8,
     logo: BitcoinLogo,
     category: 'Cryptocurrency',
+    externalLink: 'https://www.stackup.sh/learn/btc',
   },
 };
