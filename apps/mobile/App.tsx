@@ -1,4 +1,4 @@
-import React, {useRef, MutableRefObject} from 'react';
+import React, {useRef, MutableRefObject, useEffect} from 'react';
 import {StatusBar} from 'react-native';
 import {NativeBaseProvider} from 'native-base';
 import {
@@ -21,7 +21,10 @@ import {
   Env,
 } from './src/config';
 import {useAuth} from './src/hooks';
-import {useNavigationStoreAppSelector} from './src/state';
+import {
+  useNavigationStoreAppSelector,
+  useNotificationStoreAppSelector,
+} from './src/state';
 
 const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
 Sentry.init({
@@ -36,9 +39,15 @@ function App() {
   const {isReady, hasWalletInstance} = useAuth();
   const {initialNavigationState, setInitialNavigationState} =
     useNavigationStoreAppSelector();
+  const {setMessageHandler, createChannels} = useNotificationStoreAppSelector();
   const navigation = useRef() as MutableRefObject<
     NavigationContainerRef<RootStackParamList>
   >;
+
+  useEffect(() => {
+    createChannels();
+    return setMessageHandler();
+  }, []);
 
   return (
     <NativeBaseProvider theme={NativeBaseTheme}>

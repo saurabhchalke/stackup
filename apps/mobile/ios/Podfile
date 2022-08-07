@@ -1,3 +1,4 @@
+$RNFirebaseAsStaticFramework = true
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
@@ -39,7 +40,21 @@ target 'stackup' do
   use_flipper!()
 
   # Make all the other frameworks into static frameworks by overriding the static_framework? function to return true
-  dynamic_frameworks = ['Ramp', 'Passbase', 'Microblink']
+  dynamic_frameworks = [
+    'Ramp',
+    'Passbase',
+    'Microblink',
+    'Firebase',
+    'FirebaseCore',
+    'FirebaseCoreDiagnostics',
+    'FirebaseCoreInternal',
+    'FirebaseInstallations',
+    'FirebaseMessaging',
+    'GoogleUtilities',
+    'PromisesObjC',
+    'GoogleDataTransport',
+    'nanopb'
+  ]
   pre_install do |installer|
     installer.pod_targets.each do |pod|
       if !dynamic_frameworks.include?(pod.name)

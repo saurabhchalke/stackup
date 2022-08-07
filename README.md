@@ -36,11 +36,21 @@ $ yarn install:ios
 
 Stackup is built from the combination of multiple apps. See the `README.md` files in the following directories for more details.
 
+### Backend
+
 - [Contracts](./apps/contracts) - A collection of solidity smart contracts for Stackup.
 - [Explorer](./apps/explorer) - Service for fetching blockchain data for an address.
 - [Backup](./apps/backup) - Service for providing encrypted and non-custodial backup of wallets.
 - [Bundler](./apps/bundler) - Service for forwarding UserOperations to the EntryPoint.
+- [Notification](./apps/notification) - Service for sending push notifications.
+
+### Frontend
+
 - [Mobile](./apps/mobile) - A mobile native frontend for IOS and Android.
+
+### Shared libraries
+
+- [WalletJS](./packages/walletjs) - A library of helper functions for interacting with ERC-4337 accounts.
 
 # License
 

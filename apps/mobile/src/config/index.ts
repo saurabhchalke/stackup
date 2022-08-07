@@ -7,6 +7,7 @@ export * from './externalLinks';
 export * from './fee';
 export * from './gas';
 export * from './network';
+export * from './notification';
 export * from './paymaster';
 export * from './routes';
 export * from './security';

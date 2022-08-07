@@ -17,6 +17,8 @@ import {
   useWalletConnectStoreRemoveWalletSelector,
   useBrowserStoreAuthSelector,
   useBrowserStoreRemoveWalletSelector,
+  useNotificationStoreRemoveWalletSelector,
+  useNotificationStoreAuthSelector,
 } from '../state';
 
 interface UseAuthHook {
@@ -42,6 +44,7 @@ export const useRemoveWallet = (): UseRemoveWalletHook => {
   const {clear: clearWalletConnect} =
     useWalletConnectStoreRemoveWalletSelector();
   const {clear: clearBrowser} = useBrowserStoreRemoveWalletSelector();
+  const {clear: clearNotification} = useNotificationStoreRemoveWalletSelector();
 
   return async () => {
     // Clear all state here before removing wallet from device.
@@ -54,6 +57,7 @@ export const useRemoveWallet = (): UseRemoveWalletHook => {
     clearSwap();
     clearWalletConnect();
     clearBrowser();
+    clearNotification();
 
     resetMasterPassword();
     remove();
@@ -81,6 +85,8 @@ export const useAuth = (): UseAuthHook => {
     debounceAndroidAppState: debounceAndroidAppStateBrowser,
     setDebounceAndroidAppState: setDebounceAndroidAppStateBrowser,
   } = useBrowserStoreAuthSelector();
+  const {updateFCMToken, requestPermission} =
+    useNotificationStoreAuthSelector();
   const [isReady, setIsReady] = useState<boolean>(false);
   const [hasWalletInstance, setHasWalletInstance] = useState<boolean>(false);
   const [appStateDelta, setAppStateDelta] = useState<AppStateDelta>({
@@ -129,6 +135,8 @@ export const useAuth = (): UseAuthHook => {
 
       if (instance.encryptedSigner) {
         identify(instance.walletAddress);
+        updateFCMToken(instance.walletAddress);
+        requestPermission();
       }
     }
   }, [hasHydrated, instance]);

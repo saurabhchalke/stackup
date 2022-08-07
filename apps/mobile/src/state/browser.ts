@@ -5,7 +5,7 @@ import {Linking} from 'react-native';
 import {InAppBrowser} from 'react-native-inappbrowser-reborn';
 import {AppColors} from '../config';
 
-interface IntercomState {
+interface BrowserState {
   debounceAndroidAppState: boolean;
 
   setDebounceAndroidAppState: (value: boolean) => void;
@@ -15,7 +15,7 @@ interface IntercomState {
 }
 
 const STORE_NAME = 'stackup-browser-store';
-const useBrowserStore = create<IntercomState>()(
+const useBrowserStore = create<BrowserState>()(
   devtools(
     (set, get) => ({
       debounceAndroidAppState: false,
