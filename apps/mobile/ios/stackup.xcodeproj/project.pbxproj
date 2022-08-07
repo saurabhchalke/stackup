@@ -619,7 +619,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.stackup;
 				PRODUCT_NAME = stackup;
-				PROVISIONING_PROFILE_SPECIFIER = "Stackup mobile app";
+				PROVISIONING_PROFILE_SPECIFIER = "Stackup mobile app 0.0.6";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
