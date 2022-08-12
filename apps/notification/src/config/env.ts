@@ -12,6 +12,7 @@ interface AppEnvironment {
   FIREBASE_SERVICE_ACCOUNT: object;
   ALCHEMY_AUTH_TOKEN: string;
   WEBHOOK_URL: string;
+  PREFERRED_IP_HEADER: string;
 }
 
 export const Env: AppEnvironment = {
@@ -30,4 +31,6 @@ export const Env: AppEnvironment = {
   ),
   ALCHEMY_AUTH_TOKEN: process.env.STACKUP_NOTIFICATION_ALCHEMY_AUTH_TOKEN ?? "",
   WEBHOOK_URL: process.env.STACKUP_NOTIFICATION_WEBHOOK_URL ?? "",
+  PREFERRED_IP_HEADER:
+    process.env.STACKUP_NOTIFICATION_PREFERRED_IP_HEADER ?? "",
 };
