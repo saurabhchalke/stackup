@@ -4,16 +4,23 @@ dotenv.config();
 
 interface AppEnvironment {
   NODE_ENV: "production" | "development";
+  NETWORK_ENV: "mainnet" | "testnet";
   NAME: string;
   PORT: number;
   MONGO_URL: string;
   SENTRY_DSN: string;
   FIREBASE_SERVICE_ACCOUNT: object;
+  ALCHEMY_AUTH_TOKEN: string;
+  WEBHOOK_URL: string;
 }
 
 export const Env: AppEnvironment = {
   NODE_ENV:
     process.env.NODE_ENV === "production" ? "production" : "development",
+  NETWORK_ENV:
+    process.env.STACKUP_NOTIFICATION_NETWORK_ENV === "mainnet"
+      ? "mainnet"
+      : "testnet",
   NAME: "Notification",
   PORT: Number(process.env.STACKUP_NOTIFICATION_PORT),
   MONGO_URL: process.env.STACKUP_NOTIFICATION_MONGODB_URL ?? "",
@@ -21,4 +28,6 @@ export const Env: AppEnvironment = {
   FIREBASE_SERVICE_ACCOUNT: JSON.parse(
     process.env.STACKUP_NOTIFICATION_FIREBASE_SERVICE_ACCOUNT ?? "{}"
   ),
+  ALCHEMY_AUTH_TOKEN: process.env.STACKUP_NOTIFICATION_ALCHEMY_AUTH_TOKEN ?? "",
+  WEBHOOK_URL: process.env.STACKUP_NOTIFICATION_WEBHOOK_URL ?? "",
 };

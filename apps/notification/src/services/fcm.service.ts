@@ -16,3 +16,7 @@ export const remove = async (token: string) => {
   console.log(token);
   return FCMToken.deleteOne({ token });
 };
+
+export const getLatest10ByWalletAddress = async (walletAddress: string) => {
+  return FCMToken.find({ walletAddress }).sort({ updatedAt: "desc" }).limit(10);
+};
