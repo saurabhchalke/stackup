@@ -8,6 +8,7 @@ import "./IWallet.sol";
 import "./WalletHelpers.sol";
 import "../UserOperation.sol";
 import "../helpers/Calls.sol";
+import "../helpers/EnumerableSet.sol";
 import "../helpers/Signatures.sol";
 import "../helpers/UpgradeableACL.sol";
 import "../paymaster/Paymaster.sol";
@@ -19,6 +20,7 @@ contract Wallet is IWallet, UpgradeableACL, Paymaster {
   using Calls for address payable;
   using Signatures for UserOperation;
   using WalletHelpers for UserOperation;
+  using EnumerableSet for EnumerableSet.AddressSet;
 
   // Wallet's nonce
   uint256 public nonce;
@@ -86,11 +88,14 @@ contract Wallet is IWallet, UpgradeableACL, Paymaster {
   ) internal view {
     require(getGuardiansCount() > 0, "Wallet: No guardians allowed");
     require(op.isGuardianActionAllowed(), "Wallet: Invalid guardian action");
-    require(signatureData.values.length >= getMinGuardiansSignatures(), "Wallet: Insufficient guardians");
 
+    EnumerableSet.AddressSet memory uniqueSignatures = EnumerableSet.init(signatureData.values.length);
     for (uint256 i = 0; i < signatureData.values.length; i++) {
       SignatureValue memory value = signatureData.values[i];
       _validateGuardianSignature(value.signer, requestId.toEthSignedMessageHash(), value.signature);
+      uniqueSignatures.add(value.signer);
     }
+
+    require(uniqueSignatures.length() >= getMinGuardiansSignatures(), "Wallet: Insufficient guardians");
   }
 }

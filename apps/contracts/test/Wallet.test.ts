@@ -20,6 +20,7 @@ import {
 
 import Wallet from "./utils/models/wallet/Wallet";
 import { UserOp, BigNumberish, buildOp } from "./utils/types";
+import Paymaster from "./utils/models/paymaster/Paymaster";
 
 describe("Wallet", () => {
   let wallet: Wallet;
@@ -295,165 +296,47 @@ describe("Wallet", () => {
                         context(
                           "when the amount of signatures is above the min required",
                           () => {
-                            const itIncreasesTheWalletNonce = (
-                              prefund: BigNumberish
-                            ) => {
-                              it("increases the wallet nonce", async () => {
-                                const previousNonce = await wallet.nonce();
+                            context(
+                              "when there are no duplicated signatures",
+                              () => {
+                                const itIncreasesTheWalletNonce = (
+                                  prefund: BigNumberish
+                                ) => {
+                                  it("increases the wallet nonce", async () => {
+                                    const previousNonce = await wallet.nonce();
 
-                                await wallet.validateUserOp(
-                                  op,
-                                  requestId,
-                                  prefund,
-                                  { from }
-                                );
+                                    await wallet.validateUserOp(
+                                      op,
+                                      requestId,
+                                      prefund,
+                                      { from }
+                                    );
 
-                                expect(await wallet.nonce()).to.be.equal(
-                                  previousNonce.add(1)
-                                );
-                              });
-                            };
-
-                            const itIgnoresAnyOtherOpData = (
-                              prefund: BigNumberish
-                            ) => {
-                              it("ignores any other op data", async () => {
-                                op.maxFeePerGas = 123123;
-                                op.maxPriorityFeePerGas = 72834579;
-                                op.initCode = "0x2222";
-                                op.sender = other.address;
-                                op.callGas = 123;
-                                op.verificationGas = 4;
-                                op.preVerificationGas = 49172;
-                                op.paymaster = guardian.address;
-                                op.paymasterData = "0xabcd";
-                                op.signature =
-                                  await wallet.signRequestIdWithGuardians(op);
-
-                                requestId = await wallet.getRequestId(op);
-                                await expect(
-                                  wallet.validateUserOp(
-                                    op,
-                                    requestId,
-                                    prefund,
-                                    { from }
-                                  )
-                                ).not.to.be.reverted;
-                              });
-                            };
-
-                            context("when no prefund is required", () => {
-                              const prefund = 0;
-
-                              itIncreasesTheWalletNonce(prefund);
-
-                              itIgnoresAnyOtherOpData(prefund);
-
-                              it("does not transfer any funds to the entry point", async () => {
-                                const previousWalletBalance =
-                                  await ethers.provider.getBalance(
-                                    wallet.address
-                                  );
-                                const previousEntryPointBalance =
-                                  await ethers.provider.getBalance(
-                                    wallet.entryPoint.address
-                                  );
-
-                                await wallet.validateUserOp(
-                                  op,
-                                  requestId,
-                                  prefund,
-                                  { from }
-                                );
-
-                                const currentWalletBalance =
-                                  await ethers.provider.getBalance(
-                                    wallet.address
-                                  );
-                                expect(currentWalletBalance).to.be.equal(
-                                  previousWalletBalance
-                                );
-
-                                const currentEntryPointBalance =
-                                  await ethers.provider.getBalance(
-                                    wallet.entryPoint.address
-                                  );
-                                expect(currentEntryPointBalance).to.be.equal(
-                                  previousEntryPointBalance
-                                );
-                              });
-                            });
-
-                            context("when a prefund is required", () => {
-                              const prefund = fp(1);
-
-                              context("when the wallet has some funds", () => {
-                                beforeEach("fund wallet", async () => {
-                                  await owner.sendTransaction({
-                                    to: wallet.address,
-                                    value: prefund,
-                                  });
-                                });
-
-                                context(
-                                  "when the entry point does not reverts",
-                                  () => {
-                                    beforeEach("mock entry point", async () => {
-                                      await wallet.entryPoint.mockReceiveRevert(
-                                        false
-                                      );
-                                    });
-
-                                    itIncreasesTheWalletNonce(prefund);
-
-                                    itIgnoresAnyOtherOpData(prefund);
-
-                                    it("transfers the requested prefund to the entry point", async () => {
-                                      const previousWalletBalance =
-                                        await ethers.provider.getBalance(
-                                          wallet.address
-                                        );
-                                      const previousEntryPointBalance =
-                                        await ethers.provider.getBalance(
-                                          wallet.entryPoint.address
-                                        );
-
-                                      await wallet.validateUserOp(
-                                        op,
-                                        requestId,
-                                        prefund,
-                                        { from }
-                                      );
-
-                                      const currentWalletBalance =
-                                        await ethers.provider.getBalance(
-                                          wallet.address
-                                        );
-                                      expect(currentWalletBalance).to.be.equal(
-                                        previousWalletBalance.sub(prefund)
-                                      );
-
-                                      const currentEntryPointBalance =
-                                        await ethers.provider.getBalance(
-                                          wallet.entryPoint.address
-                                        );
-                                      expect(
-                                        currentEntryPointBalance
-                                      ).to.be.equal(
-                                        previousEntryPointBalance.add(prefund)
-                                      );
-                                    });
-                                  }
-                                );
-
-                                context("when the entry point reverts", () => {
-                                  beforeEach("mock entry point", async () => {
-                                    await wallet.entryPoint.mockReceiveRevert(
-                                      true
+                                    expect(await wallet.nonce()).to.be.equal(
+                                      previousNonce.add(1)
                                     );
                                   });
+                                };
 
-                                  it("reverts", async () => {
+                                const itIgnoresAnyOtherOpData = (
+                                  prefund: BigNumberish
+                                ) => {
+                                  it("ignores any other op data", async () => {
+                                    op.maxFeePerGas = 123123;
+                                    op.maxPriorityFeePerGas = 72834579;
+                                    op.initCode = "0x2222";
+                                    op.sender = other.address;
+                                    op.callGas = 123;
+                                    op.verificationGas = 4;
+                                    op.preVerificationGas = 49172;
+                                    op.paymaster = guardian.address;
+                                    op.paymasterData = "0xabcd";
+                                    op.signature =
+                                      await wallet.signRequestIdWithGuardians(
+                                        op
+                                      );
+
+                                    requestId = await wallet.getRequestId(op);
                                     await expect(
                                       wallet.validateUserOp(
                                         op,
@@ -461,31 +344,219 @@ describe("Wallet", () => {
                                         prefund,
                                         { from }
                                       )
-                                    ).to.be.revertedWith(
-                                      "ENTRY_POINT_RECEIVE_FAILED"
+                                    ).not.to.be.reverted;
+                                  });
+                                };
+
+                                context("when no prefund is required", () => {
+                                  const prefund = 0;
+
+                                  itIncreasesTheWalletNonce(prefund);
+
+                                  itIgnoresAnyOtherOpData(prefund);
+
+                                  it("does not transfer any funds to the entry point", async () => {
+                                    const previousWalletBalance =
+                                      await ethers.provider.getBalance(
+                                        wallet.address
+                                      );
+                                    const previousEntryPointBalance =
+                                      await ethers.provider.getBalance(
+                                        wallet.entryPoint.address
+                                      );
+
+                                    await wallet.validateUserOp(
+                                      op,
+                                      requestId,
+                                      prefund,
+                                      { from }
                                     );
+
+                                    const currentWalletBalance =
+                                      await ethers.provider.getBalance(
+                                        wallet.address
+                                      );
+                                    expect(currentWalletBalance).to.be.equal(
+                                      previousWalletBalance
+                                    );
+
+                                    const currentEntryPointBalance =
+                                      await ethers.provider.getBalance(
+                                        wallet.entryPoint.address
+                                      );
+                                    expect(
+                                      currentEntryPointBalance
+                                    ).to.be.equal(previousEntryPointBalance);
                                   });
                                 });
-                              });
 
-                              context(
-                                "when the wallet does not have funds",
-                                () => {
-                                  it("reverts", async () => {
-                                    await expect(
-                                      wallet.validateUserOp(
-                                        op,
-                                        requestId,
-                                        prefund,
-                                        { from }
-                                      )
-                                    ).to.be.revertedWith(
-                                      "Address: insufficient balance"
-                                    );
+                                context("when a prefund is required", () => {
+                                  const prefund = fp(1);
+
+                                  context(
+                                    "when the wallet has some funds",
+                                    () => {
+                                      beforeEach("fund wallet", async () => {
+                                        await owner.sendTransaction({
+                                          to: wallet.address,
+                                          value: prefund,
+                                        });
+                                      });
+
+                                      context(
+                                        "when the entry point does not reverts",
+                                        () => {
+                                          beforeEach(
+                                            "mock entry point",
+                                            async () => {
+                                              await wallet.entryPoint.mockReceiveRevert(
+                                                false
+                                              );
+                                            }
+                                          );
+
+                                          itIncreasesTheWalletNonce(prefund);
+
+                                          itIgnoresAnyOtherOpData(prefund);
+
+                                          it("transfers the requested prefund to the entry point", async () => {
+                                            const previousWalletBalance =
+                                              await ethers.provider.getBalance(
+                                                wallet.address
+                                              );
+                                            const previousEntryPointBalance =
+                                              await ethers.provider.getBalance(
+                                                wallet.entryPoint.address
+                                              );
+
+                                            await wallet.validateUserOp(
+                                              op,
+                                              requestId,
+                                              prefund,
+                                              { from }
+                                            );
+
+                                            const currentWalletBalance =
+                                              await ethers.provider.getBalance(
+                                                wallet.address
+                                              );
+                                            expect(
+                                              currentWalletBalance
+                                            ).to.be.equal(
+                                              previousWalletBalance.sub(prefund)
+                                            );
+
+                                            const currentEntryPointBalance =
+                                              await ethers.provider.getBalance(
+                                                wallet.entryPoint.address
+                                              );
+                                            expect(
+                                              currentEntryPointBalance
+                                            ).to.be.equal(
+                                              previousEntryPointBalance.add(
+                                                prefund
+                                              )
+                                            );
+                                          });
+                                        }
+                                      );
+
+                                      context(
+                                        "when the entry point reverts",
+                                        () => {
+                                          beforeEach(
+                                            "mock entry point",
+                                            async () => {
+                                              await wallet.entryPoint.mockReceiveRevert(
+                                                true
+                                              );
+                                            }
+                                          );
+
+                                          it("reverts", async () => {
+                                            await expect(
+                                              wallet.validateUserOp(
+                                                op,
+                                                requestId,
+                                                prefund,
+                                                { from }
+                                              )
+                                            ).to.be.revertedWith(
+                                              "ENTRY_POINT_RECEIVE_FAILED"
+                                            );
+                                          });
+                                        }
+                                      );
+                                    }
+                                  );
+
+                                  context(
+                                    "when the wallet does not have funds",
+                                    () => {
+                                      it("reverts", async () => {
+                                        await expect(
+                                          wallet.validateUserOp(
+                                            op,
+                                            requestId,
+                                            prefund,
+                                            { from }
+                                          )
+                                        ).to.be.revertedWith(
+                                          "Address: insufficient balance"
+                                        );
+                                      });
+                                    }
+                                  );
+                                });
+                              }
+                            );
+
+                            context(
+                              "when there are duplicated signatures",
+                              () => {
+                                beforeEach("add guardians", async () => {
+                                  const [guardian2, guardian3, guardian4] =
+                                    await getSigners(3, 4);
+                                  await wallet.grantGuardian(guardian2, {
+                                    from,
                                   });
-                                }
-                              );
-                            });
+                                  await wallet.grantGuardian(guardian3, {
+                                    from,
+                                  });
+                                  await wallet.grantGuardian(guardian4, {
+                                    from,
+                                  });
+                                });
+
+                                beforeEach("sign op many times", async () => {
+                                  const requestId = await wallet.getRequestId(
+                                    op
+                                  );
+                                  const signature = await guardian.signMessage(
+                                    ethers.utils.arrayify(requestId)
+                                  );
+                                  op.signature = encodeSignatures(
+                                    Paymaster.GUARDIANS_SIGNATURE,
+                                    [
+                                      { signer: guardian.address, signature },
+                                      { signer: guardian.address, signature },
+                                      { signer: guardian.address, signature },
+                                      { signer: guardian.address, signature },
+                                    ]
+                                  );
+                                });
+
+                                it("reverts", async () => {
+                                  await expect(
+                                    wallet.validateUserOp(op, requestId, {
+                                      from,
+                                    })
+                                  ).to.be.revertedWith(
+                                    "Wallet: Insufficient guardians"
+                                  );
+                                });
+                              }
+                            );
                           }
                         );
 
