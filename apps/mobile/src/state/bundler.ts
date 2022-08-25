@@ -219,3 +219,14 @@ export const useBundlerStoreWalletConnectSheetsSelector = () =>
     relayUserOperations: state.relayUserOperations,
     clear: state.clear,
   }));
+
+export const useBundlerStoreSecuritySheetsSelector = () =>
+  useBundlerStore(state => ({
+    loading: state.loading,
+    fetchPaymasterStatus: state.fetchPaymasterStatus,
+    requestPaymasterSignature: state.requestPaymasterSignature,
+    verifyUserOperationsWithPaymaster: state.verifyUserOperationsWithPaymaster,
+    signUserOperations: state.signUserOperations,
+    relayUserOperations: state.relayUserOperations,
+    clear: state.clear,
+  }));

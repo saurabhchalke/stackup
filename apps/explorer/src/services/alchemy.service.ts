@@ -8,6 +8,7 @@ import {
   NetworksConfig,
   CurrencySymbols,
   WalletStatus,
+  WalletGuardians,
 } from "../config";
 import { getRPC } from "../utils";
 
@@ -185,4 +186,18 @@ export const getWalletStatus = async (
     : constants.userOperations.initNonce;
 
   return { isDeployed, nonce };
+};
+
+export const getWalletGuardians = async (
+  network: Networks,
+  address: string
+): Promise<WalletGuardians["guardianAddresses"]> => {
+  const provider = new ethers.providers.JsonRpcProvider(getRPC(network));
+  const isDeployed = await wallet.proxy.isCodeDeployed(provider, address);
+
+  return isDeployed
+    ? wallet.access
+        .getGuardians(provider, address)
+        .then((g) => (g.length > 0 ? g : null))
+    : null;
 };

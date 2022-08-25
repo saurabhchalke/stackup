@@ -1,16 +1,22 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo, useEffect} from 'react';
 import {useToast} from 'native-base';
 import {
   RequestMasterPassword,
   SecurityOverviewSheet,
   PasswordSheet,
+  EmailSheet,
 } from '../../components';
 import {
   useNavigationStoreSecuritySheetsSelector,
   useFingerprintStoreSecuritySheetsSelector,
   useWalletStoreSecuritySheetsSelector,
+  useMagicStoreSecuritySheetsSelector,
+  useBundlerStoreSecuritySheetsSelector,
+  useSettingsStoreSecuritySheetsSelector,
+  useExplorerStoreSecuritySheetsSelector,
+  useGuardianStoreSecuritySheetsSelector,
 } from '../../state';
-import {AppColors} from '../../config';
+import {AppColors, PaymasterStatus} from '../../config';
 import {logEvent} from '../../utils/analytics';
 
 export default function SecuritySheets() {
@@ -18,9 +24,11 @@ export default function SecuritySheets() {
   const {
     showPasswordSheet,
     showSecurityOverviewSheet,
+    showEmailSheet,
     setShowSettingsSheet,
     setShowSecurityOverviewSheet,
     setShowPasswordSheet,
+    setShowEmailSheet,
   } = useNavigationStoreSecuritySheetsSelector();
   const {
     loading: fingerprintLoading,
@@ -36,18 +44,73 @@ export default function SecuritySheets() {
     getWalletSigner,
     reencryptWalletSigner,
   } = useWalletStoreSecuritySheetsSelector();
-  const [showRequestMasterPassword, setShowRequestMasterPassword] =
-    useState(false);
+  const {loading: magicLoading, loginWithEmailOTP} =
+    useMagicStoreSecuritySheetsSelector();
+  const {
+    loading: bundlerLoading,
+    fetchPaymasterStatus,
+    requestPaymasterSignature,
+    verifyUserOperationsWithPaymaster,
+    signUserOperations,
+    relayUserOperations,
+    clear: clearBundler,
+  } = useBundlerStoreSecuritySheetsSelector();
+  const {
+    network,
+    quoteCurrency: defaultCurrency,
+    timePeriod,
+  } = useSettingsStoreSecuritySheetsSelector();
+  const {
+    loading: explorerLoading,
+    currencies,
+    walletStatus,
+    fetchGasEstimate,
+    fetchAddressOverview,
+  } = useExplorerStoreSecuritySheetsSelector();
+  const {
+    loading: guardianLoading,
+    walletGuardians,
+    fetchGuardians,
+    buildModifyGuardianOps,
+  } = useGuardianStoreSecuritySheetsSelector();
+  const [requestMasterPassword, setRequestMasterPassword] = useState<{
+    show: boolean;
+    action: (pass: string) => void;
+  }>({show: false, action: () => {}});
+  const [paymasterStatus, setPaymasterStatus] = useState<
+    PaymasterStatus | undefined
+  >();
+  const currencyBalances = useMemo(
+    () =>
+      currencies.reduce((prev, curr) => {
+        return {...prev, [curr.currency]: curr.balance};
+      }, {}),
+    [currencies],
+  );
+  const isEmailRecoveryEnabled = useMemo(
+    () => walletGuardians.magicAccountGuardian !== null,
+    [walletGuardians],
+  );
 
-  const isLoading = fingerprintLoading || walletLoading;
+  useEffect(() => {
+    fetchGuardians(network, instance.walletAddress);
+  }, []);
 
-  const onMasterPasswordClose = () => {
-    setShowRequestMasterPassword(false);
+  const resetPaymasterStatus = () => setPaymasterStatus(undefined);
+
+  const onRequestMasterPasswordClose = () => {
+    clearBundler();
+    setRequestMasterPassword({show: false, action: () => {}});
   };
 
   const onSecurityOverviewClose = () => {
     logEvent('SECURITY_SETTINGS_CLOSE');
     setShowSecurityOverviewSheet(false);
+  };
+
+  const onEmailSheetClose = () => {
+    setShowEmailSheet(false);
+    resetPaymasterStatus();
   };
 
   const onClosePasswordSheet = () => {
@@ -59,6 +122,137 @@ export default function SecuritySheets() {
     logEvent('SECURITY_SETTINGS_PASSWORD_OPEN');
     setShowPasswordSheet(true);
   };
+
+  const onRecoveryEmailPress = async () => {
+    setShowEmailSheet(true);
+    setPaymasterStatus(
+      await fetchPaymasterStatus(instance.walletAddress, network),
+    );
+  };
+
+  const onRecoveryEmailSubmit = async (email: string) => {
+    if (isFingerprintEnabled) {
+      const masterPassword = await getMasterPassword();
+      masterPassword
+        ? onConfirmTransaction(email)(masterPassword)
+        : clearBundler();
+    } else {
+      setRequestMasterPassword({
+        show: true,
+        action: onConfirmTransaction(email),
+      });
+    }
+  };
+
+  const onConfirmTransaction =
+    (email: string) => async (masterPassword: string) => {
+      const gasEstimate = await fetchGasEstimate(network);
+      if (!paymasterStatus || !gasEstimate) {
+        toast.show({
+          title: 'Could not fetch transaction data. Reset and try again.',
+          backgroundColor: AppColors.singletons.warning,
+          placement: 'top',
+        });
+        return;
+      }
+
+      const guardianAddress =
+        walletGuardians.magicAccountGuardian?.guardianAddress ??
+        (await loginWithEmailOTP(email).then(
+          metadata => metadata?.publicAddress,
+        ));
+      if (!guardianAddress) {
+        toast.show({
+          title: 'Cancelled email verification',
+          backgroundColor: AppColors.singletons.warning,
+          placement: 'top',
+        });
+        return;
+      }
+
+      const userOps = buildModifyGuardianOps({
+        instance,
+        network,
+        walletStatus,
+        defaultCurrency,
+        paymasterStatus,
+        gasEstimate,
+        guardians: [guardianAddress],
+        isGrantingRole: !isEmailRecoveryEnabled,
+      });
+      const userOpsWithPaymaster = await requestPaymasterSignature(
+        userOps,
+        network,
+      );
+      if (!verifyUserOperationsWithPaymaster(userOps, userOpsWithPaymaster)) {
+        clearBundler();
+        toast.show({
+          title: 'Transaction corrupted, contact us for help',
+          backgroundColor: AppColors.singletons.warning,
+          placement: 'bottom',
+        });
+        return;
+      }
+
+      const signedUserOps = await signUserOperations(
+        instance,
+        masterPassword,
+        network,
+        userOpsWithPaymaster,
+      );
+      if (!signedUserOps) {
+        toast.show({
+          title: 'Incorrect password',
+          backgroundColor: AppColors.singletons.warning,
+          placement: 'top',
+        });
+        clearBundler();
+        return;
+      }
+
+      toast.show({
+        title: 'Transaction sent, this might take a minute...',
+        backgroundColor: AppColors.palettes.primary[600],
+        placement: 'bottom',
+      });
+      relayUserOperations(signedUserOps, network, status => {
+        switch (status) {
+          case 'PENDING':
+            toast.show({
+              title: 'Transaction still pending, refresh later',
+              backgroundColor: AppColors.palettes.primary[600],
+              placement: 'bottom',
+            });
+            break;
+
+          case 'FAIL':
+            toast.show({
+              title: 'Transaction failed, contact us for help',
+              backgroundColor: AppColors.singletons.warning,
+              placement: 'bottom',
+            });
+            break;
+
+          default:
+            toast.show({
+              title: 'Transaction completed!',
+              backgroundColor: AppColors.singletons.good,
+              placement: 'bottom',
+            });
+            break;
+        }
+
+        setShowEmailSheet(false);
+        fetchGuardians(network, instance.walletAddress);
+        fetchAddressOverview(
+          network,
+          defaultCurrency,
+          timePeriod,
+          instance.walletAddress,
+        );
+        resetPaymasterStatus();
+      });
+    };
 
   const onChangePassword = async (password: string, newPassword: string) => {
     try {
@@ -90,14 +284,14 @@ export default function SecuritySheets() {
 
   const onFingerprintChange = async (value: boolean) => {
     if (value) {
-      setShowRequestMasterPassword(true);
+      setRequestMasterPassword({show: true, action: onEnableFingerprint});
     } else {
       onDisableFingerprint();
     }
   };
 
   const onEnableFingerprint = async (masterPassword: string) => {
-    setShowRequestMasterPassword(false);
+    onRequestMasterPasswordClose();
 
     if (await getWalletSigner(masterPassword)) {
       logEvent('SECURITY_SETTINGS_TOGGLE_FINGERPRINT', {
@@ -133,31 +327,59 @@ export default function SecuritySheets() {
     setShowSecurityOverviewSheet(true);
   };
 
+  const onEmailSheetBack = () => {
+    setShowSecurityOverviewSheet(true);
+    resetPaymasterStatus();
+  };
+
   return (
     <>
       <RequestMasterPassword
-        isOpen={showRequestMasterPassword}
-        onClose={onMasterPasswordClose}
-        onConfirm={onEnableFingerprint}
+        isOpen={requestMasterPassword.show}
+        onClose={onRequestMasterPasswordClose}
+        onConfirm={requestMasterPassword.action}
       />
 
       <SecurityOverviewSheet
         isOpen={showSecurityOverviewSheet}
-        isLoading={isLoading}
+        accountLoading={fingerprintLoading || walletLoading}
+        recoveryLoading={guardianLoading}
         onClose={onSecurityOverviewClose}
         onBack={onSecurityOverviewBack}
         onPasswordPress={onPasswordPress}
         onFingerprintChange={onFingerprintChange}
+        onRecoveryEmailPress={onRecoveryEmailPress}
         isFingerprintSupported={isFingerprintSupported}
         isFingerprintEnabled={isFingerprintEnabled}
+        isEmailRecoveryEnabled={isEmailRecoveryEnabled}
       />
 
       <PasswordSheet
         isOpen={showPasswordSheet}
-        isLoading={isLoading}
+        isLoading={fingerprintLoading || walletLoading}
         onClose={onClosePasswordSheet}
         onBack={onPasswordSheetBack}
         onSubmit={onChangePassword}
+      />
+
+      <EmailSheet
+        isOpen={showEmailSheet}
+        isEmailRecoveryEnabled={isEmailRecoveryEnabled}
+        isLoading={
+          fingerprintLoading ||
+          magicLoading ||
+          bundlerLoading ||
+          guardianLoading ||
+          explorerLoading
+        }
+        maskedEmail={walletGuardians.magicAccountGuardian?.maskedEmail ?? ''}
+        defaultCurrency={defaultCurrency}
+        currencyBalances={currencyBalances}
+        paymasterStatus={paymasterStatus}
+        network={network}
+        onClose={onEmailSheetClose}
+        onBack={onEmailSheetBack}
+        onSubmit={onRecoveryEmailSubmit}
       />
     </>
   );

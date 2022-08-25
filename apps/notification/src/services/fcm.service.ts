@@ -13,7 +13,6 @@ export const update = async (
 };
 
 export const remove = async (token: string) => {
-  console.log(token);
   return FCMToken.deleteOne({ token });
 };
 

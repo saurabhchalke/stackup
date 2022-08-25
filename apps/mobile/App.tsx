@@ -25,6 +25,7 @@ import {
   useNavigationStoreAppSelector,
   useNotificationStoreAppSelector,
 } from './src/state';
+import {magicInstance} from './src/utils/magic';
 
 const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
 Sentry.init({
@@ -52,6 +53,7 @@ function App() {
   return (
     <NativeBaseProvider theme={NativeBaseTheme}>
       <StatusBar barStyle="light-content" />
+      <magicInstance.Relayer />
       {isReady ? (
         <NavigationContainer
           ref={navigation}

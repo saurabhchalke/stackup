@@ -41,7 +41,7 @@ export default function ActivityScreen({}: Props) {
   const renderActivitySections = () => {
     return activity.length
       ? activity.reduce<Array<{title: string; data: Array<ReactElement>}>>(
-          (prev, curr, i) => {
+          (prev, curr) => {
             if (
               !prev[prev.length - 1] ||
               prev[prev.length - 1].title !==
@@ -53,7 +53,7 @@ export default function ActivityScreen({}: Props) {
                   title: format(fromUnixTime(curr.timestamp), 'MMM d, yyyy'),
                   data: [
                     <ActivityItem
-                      key={`activity-item-${i}`}
+                      key={`activity-item-${JSON.stringify(curr)}`}
                       currency={curr.currency}
                       type={curr.type}
                       value={curr.value}
@@ -66,7 +66,7 @@ export default function ActivityScreen({}: Props) {
             } else {
               prev[prev.length - 1].data.push(
                 <ActivityItem
-                  key={`activity-item-${i}`}
+                  key={`activity-item-${JSON.stringify(curr)}`}
                   currency={curr.currency}
                   type={curr.type}
                   value={curr.value}

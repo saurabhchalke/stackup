@@ -5,11 +5,13 @@ import {
   Networks,
   TimePeriod,
   WalletStatus,
+  WalletGuardians,
   ActivityItem,
 } from "../config";
 import * as AlchemyService from "../services/alchemy.service";
 import * as QuoteService from "../services/quote.service";
 import * as EtherscanService from "../services/etherscan.service";
+import * as MagicLinkService from "../services/magiclink.service";
 
 interface RequestBody {
   quoteCurrency: CurrencySymbols;
@@ -140,6 +142,27 @@ export const getActivity = catchAsync(async (req, res) => {
     items: [...internalTransactions, ...erc20Transactions].sort(
       (a, b) => b.timestamp - a.timestamp
     ),
+  };
+
+  res.send(response);
+});
+
+export const getGuardians = catchAsync(async (req, res) => {
+  const { address } = req.params;
+  const { network } = req.query as { network: Networks };
+
+  const guardianAddresses = await AlchemyService.getWalletGuardians(
+    network,
+    address
+  );
+  const magicAccountGuardian = guardianAddresses
+    ? await MagicLinkService.getMagicAccountFromGuardianAddresses(
+        guardianAddresses
+      )
+    : null;
+  const response: WalletGuardians = {
+    guardianAddresses,
+    magicAccountGuardian,
   };
 
   res.send(response);

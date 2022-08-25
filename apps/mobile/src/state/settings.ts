@@ -111,3 +111,10 @@ export const useSettingsStoreActivitySelector = () =>
     quoteCurrency: state.quoteCurrency,
     timePeriod: state.timePeriod,
   }));
+
+export const useSettingsStoreSecuritySheetsSelector = () =>
+  useSettingsStore(state => ({
+    network: state.network,
+    quoteCurrency: state.quoteCurrency,
+    timePeriod: state.timePeriod,
+  }));

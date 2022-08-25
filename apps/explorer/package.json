@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@alch/alchemy-web3": "^1.4.6",
+    "@magic-sdk/admin": "^1.4.1",
     "@meanie/mongoose-to-json": "^2.6.0",
     "@sentry/node": "^7.7.0",
     "@sentry/tracing": "^7.7.0",

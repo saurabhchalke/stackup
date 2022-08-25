@@ -256,3 +256,12 @@ export const useExplorerStoreActivitySelector = () =>
     activity: state.activity,
     fetchAddressOverview: state.fetchAddressOverview,
   }));
+
+export const useExplorerStoreSecuritySheetsSelector = () =>
+  useExplorerStore(state => ({
+    loading: state.loading,
+    currencies: state.currencies,
+    walletStatus: state.walletStatus,
+    fetchGasEstimate: state.fetchGasEstimate,
+    fetchAddressOverview: state.fetchAddressOverview,
+  }));

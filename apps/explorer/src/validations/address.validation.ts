@@ -41,3 +41,14 @@ export const getActivity = {
     page: Joi.number().min(1).required(),
   }),
 };
+
+export const getGuardians = {
+  params: Joi.object().keys({
+    address: Joi.required().custom(ethereumAddress),
+  }),
+  query: Joi.object().keys({
+    network: Joi.string()
+      .valid(...ValidNetworks)
+      .required(),
+  }),
+};

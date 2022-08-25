@@ -19,6 +19,8 @@ import {
   useBrowserStoreRemoveWalletSelector,
   useNotificationStoreRemoveWalletSelector,
   useNotificationStoreAuthSelector,
+  useMagicStoreRemoveWalletSelector,
+  useGuardianStoreRemoveWalletSelector,
 } from '../state';
 
 interface UseAuthHook {
@@ -45,6 +47,8 @@ export const useRemoveWallet = (): UseRemoveWalletHook => {
     useWalletConnectStoreRemoveWalletSelector();
   const {clear: clearBrowser} = useBrowserStoreRemoveWalletSelector();
   const {clear: clearNotification} = useNotificationStoreRemoveWalletSelector();
+  const {clear: clearMagic} = useMagicStoreRemoveWalletSelector();
+  const {clear: clearGuardian} = useGuardianStoreRemoveWalletSelector();
 
   return async () => {
     // Clear all state here before removing wallet from device.
@@ -58,6 +62,8 @@ export const useRemoveWallet = (): UseRemoveWalletHook => {
     clearWalletConnect();
     clearBrowser();
     clearNotification();
+    clearMagic();
+    clearGuardian();
 
     resetMasterPassword();
     remove();

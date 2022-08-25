@@ -10,6 +10,7 @@ interface AppEnvironment {
   SENTRY_DSN: string;
   INTERCOM_APP_ID: string;
   RAMP_HOST_API_KEY: string;
+  MAGIC_API_KEY: string;
 }
 
 export const Env: AppEnvironment = {
@@ -23,4 +24,5 @@ export const Env: AppEnvironment = {
   SENTRY_DSN: Config.STACKUP_MOBILE_SENTRY_DSN,
   INTERCOM_APP_ID: Config.STACKUP_MOBILE_INTERCOM_APP_ID,
   RAMP_HOST_API_KEY: Config.STACKUP_MOBILE_RAMP_HOST_API_KEY,
+  MAGIC_API_KEY: Config.STACKUP_MOBILE_MAGIC_API_KEY,
 };

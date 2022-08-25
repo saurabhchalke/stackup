@@ -13,4 +13,11 @@ router
   .route("/:address/activity")
   .get(validate(addressValidation.getActivity), addressController.getActivity);
 
+router
+  .route("/:address/guardians")
+  .get(
+    validate(addressValidation.getGuardians),
+    addressController.getGuardians
+  );
+
 export default router;

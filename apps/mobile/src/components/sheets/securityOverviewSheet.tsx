@@ -7,28 +7,35 @@ import {
   SecuritySwitch,
   ShieldWithCheckLogo,
   FingerprintLogo,
+  EmailLogo,
 } from '..';
 
 type Props = {
   isOpen: boolean;
-  isLoading: boolean;
+  accountLoading: boolean;
+  recoveryLoading: boolean;
   onClose: () => void;
   onBack: () => void;
   onPasswordPress: () => void;
   onFingerprintChange: (value: boolean) => void;
+  onRecoveryEmailPress: () => void;
   isFingerprintSupported: boolean;
   isFingerprintEnabled: boolean;
+  isEmailRecoveryEnabled: boolean;
 };
 
 export const SecurityOverviewSheet = ({
   isOpen,
-  isLoading,
+  accountLoading,
+  recoveryLoading,
   onClose,
   onBack,
   onPasswordPress,
   onFingerprintChange,
+  onRecoveryEmailPress,
   isFingerprintSupported,
   isFingerprintEnabled,
+  isEmailRecoveryEnabled,
 }: Props) => {
   return (
     <BaseSheet
@@ -36,7 +43,7 @@ export const SecurityOverviewSheet = ({
       isOpen={isOpen}
       onClose={onClose}
       onBack={onBack}>
-      <VStack flex={1} py="25px" px="18px" space="8px">
+      <VStack flex={1} py="24px" px="18px" space="8px">
         {/* <SecurityOverview level="Insufficient" /> */}
 
         <Text fontWeight={600} fontSize="18px" color="text.5">
@@ -52,7 +59,7 @@ export const SecurityOverviewSheet = ({
 
         {isFingerprintSupported && (
           <SecuritySwitch
-            isLoading={isLoading}
+            isLoading={accountLoading}
             heading="Fingerprint"
             description="Use your finger to get in"
             source={FingerprintLogo}
@@ -60,6 +67,19 @@ export const SecurityOverviewSheet = ({
             onValueChange={onFingerprintChange}
           />
         )}
+
+        <Text fontWeight={600} mt="16px" fontSize="18px" color="text.5">
+          Recovery
+        </Text>
+
+        <SecurityItem
+          isActive={isEmailRecoveryEnabled}
+          isLoading={recoveryLoading}
+          heading="Email"
+          description="Link your account to your email"
+          source={EmailLogo}
+          onPress={onRecoveryEmailPress}
+        />
       </VStack>
     </BaseSheet>
   );

@@ -275,7 +275,9 @@ export const useNavigationStoreSecuritySheetsSelector = () =>
   useNavigationStore(state => ({
     showSecurityOverviewSheet: state.showSecurityOverviewSheet,
     showPasswordSheet: state.showPasswordSheet,
+    showEmailSheet: state.showEmailSheet,
     setShowSettingsSheet: state.setShowSettingsSheet,
     setShowSecurityOverviewSheet: state.setShowSecurityOverviewSheet,
     setShowPasswordSheet: state.setShowPasswordSheet,
+    setShowEmailSheet: state.setShowEmailSheet,
   }));

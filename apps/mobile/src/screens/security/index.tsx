@@ -10,11 +10,7 @@ import {
   externalLinks,
 } from '../../config';
 import OverviewScreen from './overview';
-import {
-  EmailSheet,
-  VerifyEmailSheet,
-  EmailConfirmedSheet,
-} from '../../components';
+import {VerifyEmailSheet, EmailConfirmedSheet} from '../../components';
 import {useNavigationStoreSecuritySelector} from '../../state';
 
 const Stack = createNativeStackNavigator<SecurityStackParamList>();
@@ -23,7 +19,6 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Security'>;
 
 export const SecurityScreen = ({navigation}: Props) => {
   const {
-    showEmailSheet,
     showVerifyEmailSheet,
     showEmailConfirmedSheet,
     setShowEmailSheet,
@@ -38,20 +33,12 @@ export const SecurityScreen = ({navigation}: Props) => {
     };
   }, [resetAllSheets]);
 
-  const onCloseEmailSheet = () => {
-    setShowEmailSheet(false);
-  };
-
   const onCloseVerifyEmailSheet = () => {
     setShowVerifyEmailSheet(false);
   };
 
   const onCloseEmailConfirmedSheet = () => {
     setShowEmailConfirmedSheet(false);
-  };
-
-  const onEmailSubmit = () => {
-    setShowVerifyEmailSheet(true);
   };
 
   const onVerifyEmailSubmit = () => {
@@ -75,12 +62,6 @@ export const SecurityScreen = ({navigation}: Props) => {
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="Overview" component={OverviewScreen} />
       </Stack.Navigator>
-
-      <EmailSheet
-        isOpen={showEmailSheet}
-        onClose={onCloseEmailSheet}
-        onSubmit={onEmailSubmit}
-      />
 
       <VerifyEmailSheet
         isOpen={showVerifyEmailSheet}
