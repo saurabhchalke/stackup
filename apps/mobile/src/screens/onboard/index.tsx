@@ -5,6 +5,7 @@ import WelcomeScreen from './welcome';
 import PasswordScreen from './password';
 import WalletImportScreen from './walletImport';
 import MasterPasswordScreen from './masterPassword';
+import EmailRecoveryScreen from './emailRecovery';
 import WalletRecoveredScreen from './walletRecovered';
 
 const Stack = createNativeStackNavigator<OnboardStackParamList>();
@@ -18,6 +19,7 @@ export const OnboardScreen = () => {
       <Stack.Screen name="Password" component={PasswordScreen} />
       <Stack.Screen name="WalletImport" component={WalletImportScreen} />
       <Stack.Screen name="MasterPassword" component={MasterPasswordScreen} />
+      <Stack.Screen name="EmailRecovery" component={EmailRecoveryScreen} />
       <Stack.Screen name="WalletRecovered" component={WalletRecoveredScreen} />
     </Stack.Navigator>
   );

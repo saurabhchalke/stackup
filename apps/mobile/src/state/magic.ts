@@ -1,5 +1,6 @@
 import create from 'zustand';
 import {devtools} from 'zustand/middleware';
+import {ethers} from 'ethers';
 import {magicInstance} from '../utils/magic';
 import {RPCError, MagicUserMetadata} from '@magic-sdk/react-native';
 
@@ -9,6 +10,8 @@ interface MagicStateConstants {
 
 interface MagicState extends MagicStateConstants {
   loginWithEmailOTP: (email: string) => Promise<MagicUserMetadata | undefined>;
+  getMagicSigner: () => ethers.Signer;
+  logoutFromMagic: () => void;
 
   clear: () => void;
 }
@@ -20,7 +23,7 @@ const defaults: MagicStateConstants = {
 const STORE_NAME = 'stackup-magic-store';
 const useMagicStore = create<MagicState>()(
   devtools(
-    set => ({
+    (set, get) => ({
       ...defaults,
 
       loginWithEmailOTP: async email => {
@@ -28,7 +31,6 @@ const useMagicStore = create<MagicState>()(
           set({loading: true});
           await magicInstance.auth.loginWithEmailOTP({email});
           const userMetaData = await magicInstance.user.getMetadata();
-          magicInstance.user.logout();
 
           set({loading: false});
           return userMetaData ?? undefined;
@@ -43,8 +45,19 @@ const useMagicStore = create<MagicState>()(
         }
       },
 
+      getMagicSigner: () => {
+        const provider = new ethers.providers.Web3Provider(
+          magicInstance.rpcProvider as any,
+        );
+        return provider.getSigner();
+      },
+
+      logoutFromMagic: async () => {
+        return magicInstance.user.logout();
+      },
+
       clear: () => {
-        magicInstance.user.logout();
+        get().logoutFromMagic();
         set({...defaults});
       },
     }),
@@ -59,4 +72,13 @@ export const useMagicStoreSecuritySheetsSelector = () =>
   useMagicStore(state => ({
     loading: state.loading,
     loginWithEmailOTP: state.loginWithEmailOTP,
+    logoutFromMagic: state.logoutFromMagic,
+  }));
+
+export const useMagicStoreEmailRecoverySelector = () =>
+  useMagicStore(state => ({
+    loading: state.loading,
+    loginWithEmailOTP: state.loginWithEmailOTP,
+    getMagicSigner: state.getMagicSigner,
+    logoutFromMagic: state.logoutFromMagic,
   }));

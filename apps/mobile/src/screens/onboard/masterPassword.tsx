@@ -9,6 +9,8 @@ import {StackScreenContainer, IconButton} from '../../components';
 import {
   useIntercomStoreMasterPasswordSelector,
   useWalletStoreMasterPasswordSelector,
+  useGuardianStoreMasterPasswordSelector,
+  useSettingsStoreMasterPasswordSelector,
 } from '../../state';
 import {logEvent} from '../../utils/analytics';
 
@@ -17,10 +19,29 @@ type Props = NativeStackScreenProps<OnboardStackParamList, 'MasterPassword'>;
 export default function MasterPasswordScreen({navigation, route}: Props) {
   const toast = useToast();
   const {openMessenger} = useIntercomStoreMasterPasswordSelector();
-  const {loading, verifyEncryptedBackup} =
+  const {loading: walletLoading, verifyEncryptedBackup} =
     useWalletStoreMasterPasswordSelector();
+  const {loading: guardianLoading, fetchGuardians} =
+    useGuardianStoreMasterPasswordSelector();
+  const {network} = useSettingsStoreMasterPasswordSelector();
   const [password, setPassword] = useState('');
   const {enableFingerprint, walletAddress} = route.params;
+  const isLoading = walletLoading || guardianLoading;
+
+  const onForgotPasswordPress = async () => {
+    const walletGuardians = await fetchGuardians(network, walletAddress);
+    if (walletGuardians.magicAccountGuardian) {
+      navigation.navigate('EmailRecovery', {
+        walletAddress,
+      });
+    } else {
+      toast.show({
+        title: 'Email recovery not enabled for this account',
+        backgroundColor: AppColors.singletons.warning,
+        placement: 'top',
+      });
+    }
+  };
 
   const onHelpPress = () => {
     logEvent('OPEN_SUPPORT', {screen: 'MasterPassword'});
@@ -93,6 +114,15 @@ export default function MasterPasswordScreen({navigation, route}: Props) {
         }
       />
 
+      <Button
+        w="100%"
+        variant="link"
+        isLoading={isLoading}
+        onPress={onForgotPasswordPress}
+        _text={{textAlign: 'center', fontWeight: 600, fontSize: '14px'}}>
+        Forgot your password?
+      </Button>
+
       <Box flex={1} />
 
       <Button
@@ -103,7 +133,7 @@ export default function MasterPasswordScreen({navigation, route}: Props) {
         Need help? Start live chat
       </Button>
 
-      <Button isLoading={loading} onPress={navigateNextHandler} mt="8px">
+      <Button isLoading={isLoading} onPress={navigateNextHandler} mt="8px">
         Continue
       </Button>
     </StackScreenContainer>

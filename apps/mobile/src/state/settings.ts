@@ -118,3 +118,15 @@ export const useSettingsStoreSecuritySheetsSelector = () =>
     quoteCurrency: state.quoteCurrency,
     timePeriod: state.timePeriod,
   }));
+
+export const useSettingsStoreMasterPasswordSelector = () =>
+  useSettingsStore(state => ({
+    network: state.network,
+  }));
+
+export const useSettingsStoreEmailRecoverySelector = () =>
+  useSettingsStore(state => ({
+    network: state.network,
+    defaultCurrency: state.quoteCurrency,
+    timePeriod: state.timePeriod,
+  }));

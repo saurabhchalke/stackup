@@ -14,6 +14,10 @@ interface RelaySubmitResponse {
   hash?: string | null;
 }
 
+interface SignUserOperationsOpts {
+  useGuardianSigner?: ethers.Signer;
+}
+
 interface BundlerStateConstants {
   loading: boolean;
 }
@@ -36,6 +40,7 @@ interface BundlerState extends BundlerStateConstants {
     masterPassword: string,
     network: Networks,
     userOperations: Array<constants.userOperations.IUserOperation>,
+    opts?: SignUserOperationsOpts,
   ) => Promise<Array<constants.userOperations.IUserOperation> | undefined>;
   relayUserOperations: (
     userOperations: Array<constants.userOperations.IUserOperation>,
@@ -126,12 +131,12 @@ const useBundlerStore = create<BundlerState>()(
         masterPassword,
         network,
         userOperations,
+        opts,
       ) => {
-        const signer = await wallet.decryptSigner(
-          instance,
-          masterPassword,
-          instance.salt,
-        );
+        const signAsGuardian = Boolean(opts?.useGuardianSigner);
+        const signer =
+          opts?.useGuardianSigner ??
+          (await wallet.decryptSigner(instance, masterPassword, instance.salt));
         if (!signer) {
           set({loading: false});
           return undefined;
@@ -139,11 +144,17 @@ const useBundlerStore = create<BundlerState>()(
 
         const signedOps = await Promise.all(
           userOperations.map(op =>
-            wallet.userOperations.sign(
-              signer,
-              NetworksConfig[network].chainId,
-              op,
-            ),
+            signAsGuardian
+              ? wallet.userOperations.signAsGuardian(
+                  signer,
+                  NetworksConfig[network].chainId,
+                  op,
+                )
+              : wallet.userOperations.sign(
+                  signer,
+                  NetworksConfig[network].chainId,
+                  op,
+                ),
           ),
         );
         return signedOps;
@@ -221,6 +232,17 @@ export const useBundlerStoreWalletConnectSheetsSelector = () =>
   }));
 
 export const useBundlerStoreSecuritySheetsSelector = () =>
+  useBundlerStore(state => ({
+    loading: state.loading,
+    fetchPaymasterStatus: state.fetchPaymasterStatus,
+    requestPaymasterSignature: state.requestPaymasterSignature,
+    verifyUserOperationsWithPaymaster: state.verifyUserOperationsWithPaymaster,
+    signUserOperations: state.signUserOperations,
+    relayUserOperations: state.relayUserOperations,
+    clear: state.clear,
+  }));
+
+export const useBundlerStoreEmailRecoverySelector = () =>
   useBundlerStore(state => ({
     loading: state.loading,
     fetchPaymasterStatus: state.fetchPaymasterStatus,

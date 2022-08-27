@@ -44,8 +44,11 @@ export default function SecuritySheets() {
     getWalletSigner,
     reencryptWalletSigner,
   } = useWalletStoreSecuritySheetsSelector();
-  const {loading: magicLoading, loginWithEmailOTP} =
-    useMagicStoreSecuritySheetsSelector();
+  const {
+    loading: magicLoading,
+    loginWithEmailOTP,
+    logoutFromMagic,
+  } = useMagicStoreSecuritySheetsSelector();
   const {
     loading: bundlerLoading,
     fetchPaymasterStatus,
@@ -158,9 +161,10 @@ export default function SecuritySheets() {
 
       const guardianAddress =
         walletGuardians.magicAccountGuardian?.guardianAddress ??
-        (await loginWithEmailOTP(email).then(
-          metadata => metadata?.publicAddress,
-        ));
+        (await loginWithEmailOTP(email).then(metadata => {
+          logoutFromMagic();
+          return metadata?.publicAddress;
+        }));
       if (!guardianAddress) {
         toast.show({
           title: 'Cancelled email verification',

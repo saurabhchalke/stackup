@@ -15,15 +15,22 @@ import {
 } from '../config';
 import {gasOverrides, initCodeOverride} from '../utils/userOperations';
 
-interface buildOpsConfig {
+interface BuildOpsConfig {
   instance: wallet.WalletInstance;
   network: Networks;
   walletStatus: WalletStatus;
   paymasterStatus: PaymasterStatus;
   gasEstimate: GasEstimate;
   defaultCurrency: CurrencySymbols;
+}
+
+interface BuildModifyGuardianOpsConfig extends BuildOpsConfig {
   guardians: Array<string>;
   isGrantingRole: boolean;
+}
+
+interface BuildRecoveryOpsConfig extends BuildOpsConfig {
+  newOwner: string;
 }
 
 interface GuardianStateConstants {
@@ -32,9 +39,15 @@ interface GuardianStateConstants {
 }
 
 interface GuardianState extends GuardianStateConstants {
-  fetchGuardians: (network: Networks, address: string) => Promise<void>;
+  fetchGuardians: (
+    network: Networks,
+    address: string,
+  ) => Promise<WalletGuardians>;
   buildModifyGuardianOps: (
-    config: buildOpsConfig,
+    config: BuildModifyGuardianOpsConfig,
+  ) => Array<constants.userOperations.IUserOperation>;
+  buildRecoveryOps: (
+    config: BuildRecoveryOpsConfig,
   ) => Array<constants.userOperations.IUserOperation>;
 
   clear: () => void;
@@ -63,6 +76,7 @@ const useGuardianStore = create<GuardianState>()(
           );
 
           set({loading: false, walletGuardians: response.data});
+          return response.data;
         } catch (error) {
           set({loading: false});
           throw error;
@@ -116,6 +130,48 @@ const useGuardianStore = create<GuardianState>()(
         return userOperations;
       },
 
+      buildRecoveryOps: config => {
+        const {
+          instance,
+          network,
+          walletStatus,
+          paymasterStatus,
+          gasEstimate,
+          defaultCurrency,
+          newOwner,
+        } = config;
+        const feeValue = ethers.BigNumber.from(
+          paymasterStatus.fees[defaultCurrency] ?? '0',
+        );
+        const allowance = ethers.BigNumber.from(
+          paymasterStatus.allowances[defaultCurrency] ?? '0',
+        );
+        const shouldApprovePaymaster = allowance.lt(feeValue);
+
+        const approvePaymasterOp = shouldApprovePaymaster
+          ? wallet.userOperations.get(instance.walletAddress, {
+              nonce: walletStatus.nonce,
+              ...gasOverrides(gasEstimate),
+              ...initCodeOverride(instance, walletStatus.isDeployed),
+              callData: wallet.encodeFunctionData.ERC20Approve(
+                NetworksConfig[network].currencies[defaultCurrency].address,
+                paymasterStatus.address,
+                feeValue,
+              ),
+            })
+          : undefined;
+        const recoveryOp = wallet.userOperations.get(instance.walletAddress, {
+          nonce: walletStatus.nonce + (shouldApprovePaymaster ? 1 : 0),
+          ...gasOverrides(gasEstimate),
+          ...initCodeOverride(instance, walletStatus.isDeployed),
+          callData: wallet.encodeFunctionData.transferOwner(newOwner),
+        });
+        const userOperations = [approvePaymasterOp, recoveryOp].filter(
+          Boolean,
+        ) as Array<constants.userOperations.IUserOperation>;
+        return userOperations;
+      },
+
       clear: () => {
         set({...defaults});
       },
@@ -133,4 +189,16 @@ export const useGuardianStoreSecuritySheetsSelector = () =>
     walletGuardians: state.walletGuardians,
     fetchGuardians: state.fetchGuardians,
     buildModifyGuardianOps: state.buildModifyGuardianOps,
+  }));
+
+export const useGuardianStoreMasterPasswordSelector = () =>
+  useGuardianStore(state => ({
+    loading: state.loading,
+    fetchGuardians: state.fetchGuardians,
+  }));
+
+export const useGuardianStoreEmailRecoverySelector = () =>
+  useGuardianStore(state => ({
+    walletGuardians: state.walletGuardians,
+    buildRecoveryOps: state.buildRecoveryOps,
   }));

@@ -6,6 +6,12 @@ import axios from 'axios';
 import {wallet} from '@stackupfinance/walletjs';
 import {Env} from '../config';
 
+interface WalletRecoveryData {
+  currentInstance: wallet.WalletInstance;
+  newOwner: wallet.WalletInstance['initOwner'];
+  newEncryptedSigner: wallet.WalletInstance['encryptedSigner'];
+}
+
 interface WalletStateConstants {
   loading: boolean;
   instance: wallet.WalletInstance;
@@ -22,12 +28,21 @@ interface WalletState extends WalletStateConstants {
     walletAddress: string,
     password: string,
   ) => Promise<wallet.WalletInstance | undefined>;
+  getDataForWalletRecovery: (
+    walletAddress: string,
+    newPassword: string,
+  ) => Promise<WalletRecoveryData>;
   setFromVerifiedBackup: (instance: wallet.WalletInstance) => void;
   getWalletSigner: (password: string) => Promise<ethers.Wallet | undefined>;
   reencryptWalletSigner: (
     password: string,
     newPassword: string,
   ) => Promise<string | undefined>;
+  updateEncryptedSigner: (
+    instance: wallet.WalletInstance,
+    newPassword: string,
+    newEncryptedSigner: string,
+  ) => Promise<void>;
 
   remove: () => void;
 
@@ -112,6 +127,26 @@ const useWalletStore = create<WalletState>()(
           }
         },
 
+        getDataForWalletRecovery: async (walletAddress, newPassword) => {
+          set({loading: true});
+
+          try {
+            const response = await axios.post<wallet.WalletInstance>(
+              `${Env.BACKUP_URL}/v1/wallet/fetch`,
+              {walletAddress},
+            );
+            const currentInstance = response.data;
+            const {initOwner: newOwner, encryptedSigner: newEncryptedSigner} =
+              await wallet.createRandom(newPassword, currentInstance.salt);
+
+            set({loading: false});
+            return {currentInstance, newOwner, newEncryptedSigner};
+          } catch (error) {
+            set({loading: false});
+            throw error;
+          }
+        },
+
         setFromVerifiedBackup: instance => {
           set({instance});
         },
@@ -164,6 +199,45 @@ const useWalletStore = create<WalletState>()(
 
             set({loading: false, instance: {...instance, encryptedSigner}});
             return encryptedSigner;
+          } catch (error) {
+            set({loading: false});
+            throw error;
+          }
+        },
+
+        updateEncryptedSigner: async (
+          instance,
+          newPassword,
+          newEncryptedSigner,
+        ) => {
+          set({loading: true});
+
+          try {
+            const signer = await wallet.decryptSigner(
+              {...instance, encryptedSigner: newEncryptedSigner},
+              newPassword,
+              instance.salt,
+            );
+            if (!signer) {
+              set({loading: false});
+              return;
+            }
+
+            const timestamp = Date.now();
+            const signature = await signer.signMessage(
+              `${newEncryptedSigner}${timestamp}`,
+            );
+            await axios.post(
+              `${Env.BACKUP_URL}/v1/wallet/update/encrypted-signer`,
+              {
+                timestamp,
+                signature,
+                encryptedSigner: newEncryptedSigner,
+                walletAddress: instance.walletAddress,
+              },
+            );
+
+            set({loading: false});
           } catch (error) {
             set({loading: false});
             throw error;
@@ -232,6 +306,13 @@ export const useWalletStoreMasterPasswordSelector = () =>
   useWalletStore(state => ({
     loading: state.loading,
     verifyEncryptedBackup: state.verifyEncryptedBackup,
+  }));
+
+export const useWalletStoreEmailRecoverySelector = () =>
+  useWalletStore(state => ({
+    loading: state.loading,
+    getDataForWalletRecovery: state.getDataForWalletRecovery,
+    updateEncryptedSigner: state.updateEncryptedSigner,
   }));
 
 export const useWalletStoreWalletRecoveredSelector = () =>

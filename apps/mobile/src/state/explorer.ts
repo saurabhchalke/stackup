@@ -211,6 +211,11 @@ export const useExplorerStoreUserOpHooksSelector = () =>
     fetchGasEstimate: state.fetchGasEstimate,
   }));
 
+export const useExplorerStoreCurrencyBalancesHookSelector = () =>
+  useExplorerStore(state => ({
+    currencies: state.currencies,
+  }));
+
 export const useExplorerStoreAssetsSheetsSelector = () =>
   useExplorerStore(state => ({
     walletStatus: state.walletStatus,
@@ -261,6 +266,14 @@ export const useExplorerStoreSecuritySheetsSelector = () =>
   useExplorerStore(state => ({
     loading: state.loading,
     currencies: state.currencies,
+    walletStatus: state.walletStatus,
+    fetchGasEstimate: state.fetchGasEstimate,
+    fetchAddressOverview: state.fetchAddressOverview,
+  }));
+
+export const useExplorerStoreEmailSelectorSelector = () =>
+  useExplorerStore(state => ({
+    loading: state.loading,
     walletStatus: state.walletStatus,
     fetchGasEstimate: state.fetchGasEstimate,
     fetchAddressOverview: state.fetchAddressOverview,

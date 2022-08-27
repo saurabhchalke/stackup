@@ -34,6 +34,9 @@ export type OnboardStackParamList = {
     enableFingerprint: boolean;
     walletAddress: string;
   };
+  EmailRecovery: {
+    walletAddress: string;
+  };
   WalletRecovered: {
     enableFingerprint: boolean;
     password: string;

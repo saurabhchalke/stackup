@@ -70,15 +70,15 @@ const sign = async (signer, chainId, op) => {
     };
 };
 exports.sign = sign;
-const signAsGuardian = async (signer, guardian, op) => {
+const signAsGuardian = async (signer, chainId, op) => {
     const ws = op.signature !== userOperations.nullCode
         ? ethers_1.ethers.utils.defaultAbiCoder.decode(["uint8", "(address signer, bytes signature)[]"], op.signature)
         : [undefined, []];
     const walletSignatureValues = [
         ...ws[1].map((v) => ({ signer: v.signer, signature: v.signature })),
         {
-            signer: guardian,
-            signature: await signer.signMessage(ethers_1.ethers.utils.arrayify(message.requestId(op, EntryPoint.address, await signer.provider.getNetwork().then((n) => n.chainId)))),
+            signer: await signer.getAddress(),
+            signature: await signer.signMessage(ethers_1.ethers.utils.arrayify(message.requestId(op, EntryPoint.address, chainId))),
         },
     ];
     return {

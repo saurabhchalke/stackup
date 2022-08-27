@@ -75,8 +75,8 @@ export const sign = async (
 };
 
 export const signAsGuardian = async (
-  signer: ethers.Wallet,
-  guardian: string,
+  signer: ethers.Signer,
+  chainId: ethers.BigNumberish,
   op: userOperations.IUserOperation
 ): Promise<userOperations.IUserOperation> => {
   const ws =
@@ -90,14 +90,10 @@ export const signAsGuardian = async (
   const walletSignatureValues = [
     ...ws[1].map((v: any) => ({ signer: v.signer, signature: v.signature })),
     {
-      signer: guardian,
+      signer: await signer.getAddress(),
       signature: await signer.signMessage(
         ethers.utils.arrayify(
-          message.requestId(
-            op,
-            EntryPoint.address,
-            await signer.provider.getNetwork().then((n) => n.chainId)
-          )
+          message.requestId(op, EntryPoint.address, chainId)
         )
       ),
     },

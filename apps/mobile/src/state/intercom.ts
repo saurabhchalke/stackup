@@ -62,3 +62,6 @@ export const useIntercomStoreWalletImportSelector = () =>
 
 export const useIntercomStoreMasterPasswordSelector = () =>
   useIntercomStore(state => ({openMessenger: state.openMessenger}));
+
+export const useIntercomStoreEmailRecoverySelector = () =>
+  useIntercomStore(state => ({openMessenger: state.openMessenger}));
