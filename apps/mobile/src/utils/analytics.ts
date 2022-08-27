@@ -11,8 +11,12 @@ type Events = {
   WALLET_IMPORT_CONTINUE: undefined;
   WALLET_IMPORT_BACK: undefined;
 
+  MASTER_PASSWORD_FORGET: {enabled: boolean};
   MASTER_PASSWORD_CONTINUE: undefined;
   MASTER_PASSWORD_BACK: undefined;
+
+  EMAIL_RECOVERY_BACK: undefined;
+  EMAIL_RECOVERY_TRANSACTION_CONFIRM: undefined;
 
   WALLET_RECOVERED_CONTINUE: undefined;
   WALLET_RECOVERED_BACK: undefined;
@@ -78,6 +82,10 @@ type Events = {
   SECURITY_SETTINGS_PASSWORD_CLOSE: undefined;
   SECURITY_SETTINGS_PASSWORD_BACK: undefined;
   SECURITY_SETTINGS_PASSWORD_UPDATE: undefined;
+  SECURITY_SETTINGS_RECOVERY_EMAIL_OPEN: undefined;
+  SECURITY_SETTINGS_RECOVERY_EMAIL_CLOSE: undefined;
+  SECURITY_SETTINGS_RECOVERY_EMAIL_BACK: undefined;
+  SECURITY_SETTINGS_RECOVERY_EMAIL_UPDATE: {enabled: boolean};
 };
 
 const ampInstance = Amplitude.getInstance();

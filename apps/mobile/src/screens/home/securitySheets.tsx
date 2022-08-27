@@ -112,6 +112,7 @@ export default function SecuritySheets() {
   };
 
   const onEmailSheetClose = () => {
+    logEvent('SECURITY_SETTINGS_RECOVERY_EMAIL_CLOSE');
     setShowEmailSheet(false);
     resetPaymasterStatus();
   };
@@ -127,6 +128,7 @@ export default function SecuritySheets() {
   };
 
   const onRecoveryEmailPress = async () => {
+    logEvent('SECURITY_SETTINGS_RECOVERY_EMAIL_OPEN');
     setShowEmailSheet(true);
     setPaymasterStatus(
       await fetchPaymasterStatus(instance.walletAddress, network),
@@ -149,6 +151,7 @@ export default function SecuritySheets() {
 
   const onConfirmTransaction =
     (email: string) => async (masterPassword: string) => {
+      setRequestMasterPassword({show: false, action: () => {}});
       const gasEstimate = await fetchGasEstimate(network);
       if (!paymasterStatus || !gasEstimate) {
         toast.show({
@@ -218,6 +221,9 @@ export default function SecuritySheets() {
         title: 'Transaction sent, this might take a minute...',
         backgroundColor: AppColors.palettes.primary[600],
         placement: 'bottom',
+      });
+      logEvent('SECURITY_SETTINGS_RECOVERY_EMAIL_UPDATE', {
+        enabled: !isEmailRecoveryEnabled,
       });
       relayUserOperations(signedUserOps, network, status => {
         switch (status) {
@@ -332,6 +338,7 @@ export default function SecuritySheets() {
   };
 
   const onEmailSheetBack = () => {
+    logEvent('SECURITY_SETTINGS_RECOVERY_EMAIL_BACK');
     setShowSecurityOverviewSheet(true);
     resetPaymasterStatus();
   };

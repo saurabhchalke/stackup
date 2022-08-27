@@ -127,12 +127,12 @@ export default function EmailRecoveryScreen({navigation, route}: Props) {
   }, []);
 
   const onHelpPress = () => {
-    logEvent('OPEN_SUPPORT', {screen: 'MasterPassword'});
+    logEvent('OPEN_SUPPORT', {screen: 'EmailRecovery'});
     openMessenger();
   };
 
   const onBackPress = () => {
-    logEvent('MASTER_PASSWORD_BACK');
+    logEvent('EMAIL_RECOVERY_BACK');
     navigation.goBack();
   };
 
@@ -242,6 +242,7 @@ export default function EmailRecoveryScreen({navigation, route}: Props) {
       placement: 'bottom',
     });
     logoutFromMagic();
+    logEvent('EMAIL_RECOVERY_TRANSACTION_CONFIRM');
     relayUserOperations(signedUserOps, network, status => {
       switch (status) {
         case 'PENDING':

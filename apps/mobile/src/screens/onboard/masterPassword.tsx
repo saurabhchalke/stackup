@@ -31,10 +31,12 @@ export default function MasterPasswordScreen({navigation, route}: Props) {
   const onForgotPasswordPress = async () => {
     const walletGuardians = await fetchGuardians(network, walletAddress);
     if (walletGuardians.magicAccountGuardian) {
+      logEvent('MASTER_PASSWORD_FORGET', {enabled: true});
       navigation.navigate('EmailRecovery', {
         walletAddress,
       });
     } else {
+      logEvent('MASTER_PASSWORD_FORGET', {enabled: false});
       toast.show({
         title: 'Email recovery not enabled for this account',
         backgroundColor: AppColors.singletons.warning,
