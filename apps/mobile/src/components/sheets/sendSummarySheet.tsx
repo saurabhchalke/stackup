@@ -2,17 +2,14 @@ import React from 'react';
 import {Box, VStack, Heading, Text, Button} from 'native-base';
 import {ethers, BigNumberish} from 'ethers';
 import {faArrowUp} from '@fortawesome/free-solid-svg-icons/faArrowUp';
-import {BaseSheet} from '.';
-import {ImageWithIconBadge, SummaryTable} from '..';
 import {
   CurrencySymbols,
   CurrencyBalances,
-  Networks,
   CurrencyMeta,
-  NetworksConfig,
-  AppColors,
-  Fee,
-} from '../../config';
+} from '@stackupfinance/config';
+import {BaseSheet} from '.';
+import {ImageWithIconBadge, SummaryTable, CurrencyLogos} from '..';
+import {Networks, NetworksConfig, AppColors, Fee} from '../../config';
 import {formatCurrency} from '../../utils/currency';
 import {truncate} from '../../utils/address';
 
@@ -87,7 +84,7 @@ export const SendSummarySheet = ({
         alignItems="center">
         <ImageWithIconBadge
           key={`send-summary-${currency}-logo`}
-          source={CurrencyMeta[currency].logo}
+          source={CurrencyLogos[currency]}
           icon={faArrowUp}
         />
 

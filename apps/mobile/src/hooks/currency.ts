@@ -1,5 +1,5 @@
 import {useMemo} from 'react';
-import {CurrencyBalances} from '../config';
+import {CurrencyBalances} from '@stackupfinance/config';
 import {useExplorerStoreCurrencyBalancesHookSelector} from '../state';
 
 export const useCurrencyBalances = (): CurrencyBalances => {

@@ -1,4 +1,4 @@
-import {CurrencyBalances} from './currency';
+import {CurrencyBalances} from '@stackupfinance/config';
 
 export interface PaymasterStatus {
   address: string;

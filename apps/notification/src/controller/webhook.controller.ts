@@ -1,7 +1,8 @@
 import httpStatus from "http-status";
 import { ethers } from "ethers";
+import { CurrencyList } from "@stackupfinance/config";
 import { catchAsync } from "../utils";
-import { AlchemyAddressActivityEvent, ValidCurrencies } from "../config";
+import { AlchemyAddressActivityEvent } from "../config";
 import * as ActivityWebhookService from "../services/activitywebhook.service";
 import * as FCMService from "../services/fcm.service";
 import * as FirebaseService from "../services/firebase.service";
@@ -18,7 +19,7 @@ export const alchemyActivity = catchAsync(async (req, res) => {
   if (
     activityWebhook?.walletAddress ===
       ethers.utils.getAddress(activity.toAddress) &&
-    ValidCurrencies.has(activity.asset)
+    CurrencyList.includes(activity.asset)
   ) {
     const fcmTokens = await FCMService.getLatest10ByWalletAddress(
       activityWebhook.walletAddress

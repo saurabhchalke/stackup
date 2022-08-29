@@ -4,13 +4,9 @@ import {faArrowUp} from '@fortawesome/free-solid-svg-icons/faArrowUp';
 import {faArrowDown} from '@fortawesome/free-solid-svg-icons/faArrowDown';
 import {IconDefinition} from '@fortawesome/fontawesome-common-types';
 import {BigNumberish} from 'ethers';
-import {BaseItem} from '.';
-import {
-  CurrencySymbols,
-  CurrencyMeta,
-  ActivityType,
-  AppColors,
-} from '../config';
+import {CurrencySymbols} from '@stackupfinance/config';
+import {BaseItem, CurrencyLogos} from '.';
+import {ActivityType, AppColors} from '../config';
 import {formatCurrency} from '../utils/currency';
 import {truncate} from '../utils/address';
 
@@ -49,7 +45,7 @@ export const ActivityItem = ({currency, type, value, from, to}: Props) => {
   return (
     <BaseItem
       alt="activity-item"
-      source={CurrencyMeta[currency].logo}
+      source={CurrencyLogos[currency]}
       sourceIcon={sourceIcon}>
       <VStack>
         <HStack justifyContent="space-between">

@@ -2,8 +2,8 @@ import React from 'react';
 import {Box, HStack, Text, Center} from 'native-base';
 import {BigNumberish} from 'ethers';
 import {faArrowsUpDown} from '@fortawesome/free-solid-svg-icons/faArrowsUpDown';
+import {CurrencySymbols, CurrencyBalances} from '@stackupfinance/config';
 import {CurrencyInput, DropdownButton, IconButton} from '.';
-import {CurrencySymbols, CurrencyBalances} from '../config';
 import {formatCurrency} from '../utils/currency';
 
 type Props = {

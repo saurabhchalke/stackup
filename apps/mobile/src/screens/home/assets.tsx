@@ -8,13 +8,11 @@ import {faSliders} from '@fortawesome/free-solid-svg-icons/faSliders';
 import {faBars} from '@fortawesome/free-solid-svg-icons/faBars';
 import {faQrcode} from '@fortawesome/free-solid-svg-icons/faQrcode';
 import {
-  RootStackParamList,
-  HomeTabParamList,
-  AppColors,
   CurrencyCategoryList,
   CurrencyMeta,
   CurrencySymbols,
-} from '../../config';
+} from '@stackupfinance/config';
+import {RootStackParamList, HomeTabParamList, AppColors} from '../../config';
 import {
   TabScreenContainer,
   TabScreenHeader,

@@ -3,13 +3,15 @@ import {Box, Heading, Input, Text, Button, useToast} from 'native-base';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faAt} from '@fortawesome/free-solid-svg-icons/faAt';
 import {ethers} from 'ethers';
+import {
+  CurrencySymbols,
+  CurrencyBalances,
+  CurrencyMeta,
+} from '@stackupfinance/config';
 import {BaseSheet} from '.';
 import {SummaryTable} from '..';
 import {
   AppColors,
-  CurrencySymbols,
-  CurrencyBalances,
-  CurrencyMeta,
   Networks,
   NetworksConfig,
   PaymasterStatus,

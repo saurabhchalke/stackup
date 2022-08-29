@@ -3,7 +3,8 @@ import {Linking} from 'react-native';
 import {useToast} from 'native-base';
 import {BigNumberish} from 'ethers';
 import {constants} from '@stackupfinance/walletjs';
-import {externalLinks, CurrencySymbols, AppColors} from '../../config';
+import {CurrencySymbols} from '@stackupfinance/config';
+import {externalLinks, AppColors} from '../../config';
 import {
   RequestMasterPassword,
   SettingsSheet,

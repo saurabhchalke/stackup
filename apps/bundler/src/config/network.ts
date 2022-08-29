@@ -1,5 +1,6 @@
+import { ethers } from "ethers";
+import { CurrencySymbols } from "@stackupfinance/config";
 import { Env } from "./env";
-import { CurrencySymbols } from "./currency";
 
 export type Networks = "Polygon";
 
@@ -12,6 +13,11 @@ export const ValidNetworks: Array<Networks> = ["Polygon"];
 export const NetworksConfig: Record<Networks, NetworksConfig> = {
   Polygon: {
     currencies: {
+      MATIC: {
+        // Not currently supported
+        address: ethers.constants.AddressZero,
+        priceFeed: ethers.constants.AddressZero,
+      },
       USDC: {
         address:
           Env.NETWORK_ENV === "mainnet"
@@ -21,6 +27,16 @@ export const NetworksConfig: Record<Networks, NetworksConfig> = {
           Env.NETWORK_ENV === "mainnet"
             ? "0xAB594600376Ec9fD91F8e885dADF0CE036862dE0"
             : "0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada",
+      },
+      ETH: {
+        // Not currently supported
+        address: ethers.constants.AddressZero,
+        priceFeed: ethers.constants.AddressZero,
+      },
+      BTC: {
+        // Not currently supported
+        address: ethers.constants.AddressZero,
+        priceFeed: ethers.constants.AddressZero,
       },
     },
   },

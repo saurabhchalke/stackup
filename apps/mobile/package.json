@@ -35,6 +35,7 @@
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.7.0",
     "@sentry/react-native": "^4.2.0",
+    "@stackupfinance/config": "1.0.0",
     "@stackupfinance/walletjs": "1.0.0",
     "@walletconnect/client": "^1.7.8",
     "axios": "^0.27.2",

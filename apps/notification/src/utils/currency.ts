@@ -1,5 +1,5 @@
 import { ethers, BigNumberish } from "ethers";
-import { CurrencySymbols, CurrencyMeta } from "../config";
+import { CurrencySymbols, CurrencyMeta } from "@stackupfinance/config";
 
 const USDCDisplay = new Intl.NumberFormat("en-US", {
   style: "currency",

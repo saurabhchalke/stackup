@@ -1,6 +1,7 @@
 import Joi from "joi";
+import { CurrencyList } from "@stackupfinance/config";
 import { bigNumber, ethereumAddress } from "./custom.validation";
-import { ValidNetworks, ValidCurrencies } from "../config";
+import { ValidNetworks } from "../config";
 
 export const quote = {
   query: Joi.object().keys({
@@ -8,10 +9,10 @@ export const quote = {
       .valid(...ValidNetworks)
       .required(),
     baseCurrency: Joi.string()
-      .valid(...ValidCurrencies)
+      .valid(...CurrencyList)
       .required(),
     quoteCurrency: Joi.string()
-      .valid(...ValidCurrencies)
+      .valid(...CurrencyList)
       .required(),
     value: Joi.required().custom(bigNumber),
     address: Joi.required().custom(ethereumAddress),

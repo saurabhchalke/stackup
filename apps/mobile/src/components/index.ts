@@ -2,6 +2,7 @@ export * from './sheets';
 export * from './activityItem';
 export * from './baseItem';
 export * from './currencyInput';
+export * from './currencyLogos';
 export * from './currencySwap';
 export * from './dropdownButton';
 export * from './enableFingerprint';

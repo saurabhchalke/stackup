@@ -1,7 +1,7 @@
 import React from 'react';
 import {Box, VStack, Text, Divider} from 'native-base';
-import {CurrencySymbols} from '../config';
 import {BigNumberish} from 'ethers';
+import {CurrencySymbols} from '@stackupfinance/config';
 import {formatCurrency} from '../utils/currency';
 
 type Props = {

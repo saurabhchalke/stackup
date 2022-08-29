@@ -1,8 +1,8 @@
 import httpStatus from "http-status";
-import { BigNumberish } from "ethers";
 import { constants } from "@stackupfinance/walletjs";
+import { CurrencyBalances } from "@stackupfinance/config";
 import { ApiError, catchAsync } from "../utils";
-import { Env, Networks, CurrencySymbols, DefaultFees } from "../config";
+import { Env, Networks, DefaultFees } from "../config";
 import * as AlchemyService from "../services/alchemy.service";
 import * as PaymasterService from "../services/paymaster.service";
 
@@ -17,8 +17,8 @@ interface SignResponse {
 
 interface StatusResponse {
   address: string;
-  fees: Record<CurrencySymbols, BigNumberish>;
-  allowances: Record<CurrencySymbols, BigNumberish>;
+  fees: CurrencyBalances;
+  allowances: CurrencyBalances;
 }
 
 export const sign = catchAsync(async (req, res) => {

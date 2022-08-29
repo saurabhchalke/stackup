@@ -1,8 +1,8 @@
 import { BigNumberish, ethers } from "ethers";
 import { constants, wallet } from "@stackupfinance/walletjs";
+import { CurrencySymbols } from "@stackupfinance/config";
 import {
   Env,
-  CurrencySymbols,
   DefaultFees,
   ERC20FunctionSignatures,
   NetworksConfig,
@@ -21,8 +21,14 @@ export const verifyUserOperations = (
     return [false, "No User Operations to verify."];
   }
 
+  // Fee must be a supported currency.
+  const fee = DefaultFees[feeCurrency];
+  if (!fee) {
+    return [false, "Fee currency not supported."];
+  }
+
   // Check if allowance is below the required fee.
-  if (ethers.BigNumber.from(allowance).lt(DefaultFees[feeCurrency])) {
+  if (ethers.BigNumber.from(allowance).lt(fee)) {
     const opCallData = wallet.decodeCallData.fromUserOperation(userOps[0]);
     const erc20CallData =
       wallet.decodeCallData.Erc20FromExecuteUserOp(opCallData);
@@ -32,7 +38,7 @@ export const verifyUserOperations = (
       !erc20CallData ||
       erc20CallData.signature !== ERC20FunctionSignatures.erc20Approve ||
       erc20CallData.args[0] !== Env.PAYMASTER_ADDRESS ||
-      ethers.BigNumber.from(erc20CallData.args[1]).lt(DefaultFees[feeCurrency])
+      ethers.BigNumber.from(erc20CallData.args[1]).lt(fee)
     ) {
       return [false, "Paymaster unable to extract fees."];
     }
@@ -72,7 +78,6 @@ export const verifyUserOperations = (
   }, true);
 
   // Check sender has enough balance to cover all transfers + fees.
-  const fee = DefaultFees[feeCurrency];
   if (
     ethers.BigNumber.from(balance).lt(transferringFeeCurrencyTotal.add(fee))
   ) {
@@ -87,6 +92,12 @@ export const signUserOperations = (
   feeCurrency: CurrencySymbols,
   network: Networks
 ) => {
+  // Fee must be a supported currency.
+  const fee = DefaultFees[feeCurrency];
+  if (!fee) {
+    throw new Error("Fee currency not supported.");
+  }
+
   const signer = ethers.Wallet.fromMnemonic(Env.MNEMONIC);
 
   return userOps.map((op, index) => {
@@ -95,7 +106,7 @@ export const signUserOperations = (
       signer,
       Env.PAYMASTER_ADDRESS,
       {
-        fee: DefaultFees[feeCurrency],
+        fee,
         // Charge for the entire batch upfront in the first op.
         mode:
           index === 0

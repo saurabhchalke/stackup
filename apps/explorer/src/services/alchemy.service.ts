@@ -2,11 +2,11 @@ import axios from "axios";
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import { ethers, BigNumberish } from "ethers";
 import { contracts, wallet, constants } from "@stackupfinance/walletjs";
+import { CurrencySymbols } from "@stackupfinance/config";
 import {
   Env,
   Networks,
   NetworksConfig,
-  CurrencySymbols,
   WalletStatus,
   WalletGuardians,
 } from "../config";

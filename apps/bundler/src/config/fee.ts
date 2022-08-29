@@ -1,6 +1,5 @@
-import { BigNumberish } from "ethers";
-import { CurrencySymbols } from "./currency";
+import { CurrencyBalances } from "@stackupfinance/config";
 
-export const DefaultFees: Record<CurrencySymbols, BigNumberish> = {
+export const DefaultFees: CurrencyBalances = {
   USDC: "110000",
 };

@@ -1,11 +1,7 @@
 import Joi from "joi";
+import { CurrencyList, ValidDefaultCurrenies } from "@stackupfinance/config";
 import { ethereumAddress } from "./custom.validation";
-import {
-  ValidNetworks,
-  ValidTimePeriods,
-  ValidQuoteCurrenies,
-  ValidCurrencies,
-} from "../config";
+import { ValidNetworks, ValidTimePeriods } from "../config";
 
 export const post = {
   params: Joi.object().keys({
@@ -13,7 +9,7 @@ export const post = {
   }),
   body: Joi.object().keys({
     quoteCurrency: Joi.string()
-      .valid(...ValidQuoteCurrenies)
+      .valid(...ValidDefaultCurrenies)
       .required(),
     network: Joi.string()
       .valid(...ValidNetworks)
@@ -22,7 +18,7 @@ export const post = {
       .valid(...ValidTimePeriods)
       .required(),
     currencies: Joi.array()
-      .items(Joi.string().valid(...ValidCurrencies))
+      .items(Joi.string().valid(...CurrencyList))
       .unique()
       .required()
       .min(1)

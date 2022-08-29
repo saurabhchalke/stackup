@@ -2,16 +2,14 @@ import React from 'react';
 import {Box, Image, Spinner, Button, Heading, Text} from 'native-base';
 import WalletConnect from '@walletconnect/client';
 import {ethers} from 'ethers';
-import {BaseSheet} from '.';
-import {SummaryTable} from '..';
 import {
-  CallRequestPayloads,
   CurrencySymbols,
   CurrencyBalances,
   CurrencyMeta,
-  PaymasterStatus,
-  AppColors,
-} from '../../config';
+} from '@stackupfinance/config';
+import {BaseSheet} from '.';
+import {SummaryTable} from '..';
+import {CallRequestPayloads, PaymasterStatus, AppColors} from '../../config';
 import {formatCurrency} from '../../utils/currency';
 
 type Props = {

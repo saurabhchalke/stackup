@@ -1,7 +1,7 @@
 import { ethers, BigNumberish } from "ethers";
+import { CurrencySymbols } from "@stackupfinance/config";
 import { catchAsync, convertToQuoteCurrency } from "../utils";
 import {
-  CurrencySymbols,
   Networks,
   TimePeriod,
   WalletStatus,

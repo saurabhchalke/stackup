@@ -2,8 +2,9 @@ import React from 'react';
 import {Pressable, HStack, VStack, Text} from 'native-base';
 import hexToRgba from 'hex-to-rgba';
 import {BigNumberish} from 'ethers';
-import {BaseItem} from '.';
-import {AppColors, CurrencySymbols, CurrencyMeta} from '../config';
+import {CurrencySymbols, CurrencyMeta} from '@stackupfinance/config';
+import {BaseItem, CurrencyLogos} from '.';
+import {AppColors} from '../config';
 import {formatCurrency} from '../utils/currency';
 
 type Props = {
@@ -18,7 +19,7 @@ export const SelectCurrencyItem = ({currency, balance, onPress}: Props) => {
       {({isPressed}) => (
         <BaseItem
           alt="selectCurrencyItem"
-          source={CurrencyMeta[currency].logo}
+          source={CurrencyLogos[currency]}
           backgroundColor={
             isPressed
               ? hexToRgba(AppColors.background[3], 0.8)

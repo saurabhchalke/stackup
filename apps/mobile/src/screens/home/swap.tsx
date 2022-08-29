@@ -4,7 +4,8 @@ import {RefreshControl} from 'react-native';
 import {Box, Button, ScrollView, useToast} from 'native-base';
 import type {MaterialTopTabScreenProps} from '@react-navigation/material-top-tabs';
 import {BigNumberish, ethers} from 'ethers';
-import {CurrencySymbols, HomeTabParamList, AppColors} from '../../config';
+import {CurrencySymbols} from '@stackupfinance/config';
+import {HomeTabParamList, AppColors} from '../../config';
 import {
   TabScreenContainer,
   TabScreenHeader,

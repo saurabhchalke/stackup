@@ -1,7 +1,7 @@
 import {ImageSourcePropType} from 'react-native';
 import {BigNumberish, ethers} from 'ethers';
+import {CurrencySymbols} from '@stackupfinance/config';
 import {Env} from './env';
-import {CurrencySymbols} from './currency';
 import {PolygonLogo} from '../components';
 
 export type Networks = 'Polygon';

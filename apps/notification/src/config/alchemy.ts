@@ -1,5 +1,5 @@
 import { BigNumberish } from "ethers";
-import { CurrencySymbols } from "./currency";
+import { CurrencySymbols } from "@stackupfinance/config";
 import { Networks } from "./network";
 import { Env } from "./env";
 

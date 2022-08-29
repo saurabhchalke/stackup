@@ -5,8 +5,9 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faArrowTrendUp} from '@fortawesome/free-solid-svg-icons/faArrowTrendUp';
 import {faArrowTrendDown} from '@fortawesome/free-solid-svg-icons/faArrowTrendDown';
 import {ethers, BigNumberish} from 'ethers';
-import {BaseItem} from './baseItem';
-import {AppColors, CurrencySymbols, CurrencyMeta} from '../config';
+import {CurrencySymbols, CurrencyMeta} from '@stackupfinance/config';
+import {BaseItem, CurrencyLogos} from '.';
+import {AppColors} from '../config';
 import {formatCurrency, percentChange} from '../utils/currency';
 
 type Props = {
@@ -52,7 +53,7 @@ export const PortfolioItem = ({
     <Pressable isDisabled={onPress === undefined} onPress={onPress}>
       {({isPressed}) => (
         <BaseItem
-          source={CurrencyMeta[currency].logo}
+          source={CurrencyLogos[currency]}
           alt="portfolioItem"
           backgroundColor={
             isPressed

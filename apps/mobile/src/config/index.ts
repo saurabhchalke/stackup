@@ -1,6 +1,5 @@
 export * from './activity';
 export * from './address';
-export * from './currency';
 export * from './env';
 export * from './explorer';
 export * from './externalLinks';

@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import toJSON from "@meanie/mongoose-to-json";
-import { CurrencySymbols } from "../config";
+import { CurrencySymbols } from "@stackupfinance/config";
 
 export interface IQuote {
   currency: CurrencySymbols;

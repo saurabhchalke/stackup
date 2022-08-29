@@ -3,9 +3,9 @@ import {devtools} from 'zustand/middleware';
 import axios from 'axios';
 import {ethers} from 'ethers';
 import {wallet, constants} from '@stackupfinance/walletjs';
+import {CurrencySymbols} from '@stackupfinance/config';
 import {
   Env,
-  CurrencySymbols,
   GasEstimate,
   Networks,
   NetworksConfig,

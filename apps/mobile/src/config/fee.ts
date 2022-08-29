@@ -1,5 +1,5 @@
 import {BigNumberish} from 'ethers';
-import {CurrencySymbols} from './currency';
+import {CurrencySymbols} from '@stackupfinance/config';
 
 export type Fee = {
   currency: CurrencySymbols;

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { CurrencyMeta } from "@stackupfinance/config";
 import {
   Networks,
   Env,
@@ -6,7 +7,6 @@ import {
   AlchemyReverseNetworkMap,
   AlchemyAddressActivityEvent,
   NotificationMessageData,
-  CurrencyMeta,
 } from "../config";
 import { formatCurrency } from "../utils";
 import { IActivityWebhook } from "../models/activitywebhook.model";

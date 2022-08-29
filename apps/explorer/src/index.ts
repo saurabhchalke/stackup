@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
+import { ValidDefaultCurrenies } from "@stackupfinance/config";
 import app from "./app";
 import queue, { defineJob, repeatJob } from "./queue";
 import fetchQuotesProcessor from "./processors/fetchQuotes.processor";
-import { Env, ValidQuoteCurrenies } from "./config";
+import { Env } from "./config";
 import { logger } from "./utils";
 
 mongoose.connect(Env.MONGO_URL).then((mongooseInstance) => {
@@ -26,7 +27,7 @@ mongoose.connect(Env.MONGO_URL).then((mongooseInstance) => {
       }
     );
     await Promise.all(
-      ValidQuoteCurrenies.map((quoteCurrency) =>
+      ValidDefaultCurrenies.map((quoteCurrency) =>
         repeatJob(
           "fetchQuotes",
           { quoteCurrency, attempt: 0 },

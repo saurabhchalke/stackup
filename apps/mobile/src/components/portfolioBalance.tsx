@@ -4,7 +4,8 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faArrowTrendUp} from '@fortawesome/free-solid-svg-icons/faArrowTrendUp';
 import {faArrowTrendDown} from '@fortawesome/free-solid-svg-icons/faArrowTrendDown';
 import {ethers, BigNumberish} from 'ethers';
-import {AppColors, CurrencySymbols} from '../config';
+import {CurrencySymbols} from '@stackupfinance/config';
+import {AppColors} from '../config';
 import {formatCurrency, valueChange, percentChange} from '../utils/currency';
 
 interface Props {

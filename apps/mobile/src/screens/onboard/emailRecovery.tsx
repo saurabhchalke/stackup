@@ -6,12 +6,12 @@ import {faAt} from '@fortawesome/free-solid-svg-icons/faAt';
 import {faKey} from '@fortawesome/free-solid-svg-icons/faKey';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons/faArrowLeft';
 import {ethers} from 'ethers';
+import {CurrencyMeta} from '@stackupfinance/config';
 import {
   AppColors,
   OnboardStackParamList,
   NetworksConfig,
   PaymasterStatus,
-  CurrencyMeta,
   GasEstimate,
 } from '../../config';
 import {StackScreenContainer, IconButton, SummaryTable} from '../../components';

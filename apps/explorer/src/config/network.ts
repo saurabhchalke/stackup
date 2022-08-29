@@ -1,7 +1,7 @@
 import { ethers, BigNumberish } from "ethers";
 import { Token, WETH9 } from "@uniswap/sdk-core";
+import { CurrencySymbols, CurrencyMeta } from "@stackupfinance/config";
 import { AppEnvironment, Env } from "./env";
-import { CurrencySymbols, CurrencyMeta } from ".";
 
 export type Networks = "Polygon";
 

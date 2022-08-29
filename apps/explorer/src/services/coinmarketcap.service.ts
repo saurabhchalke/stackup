@@ -1,5 +1,6 @@
 import axios from "axios";
-import { Env, CurrencySymbols, ValidQuoteCurrenies } from "../config";
+import { CurrencySymbols, ValidDefaultCurrenies } from "@stackupfinance/config";
+import { Env } from "../config";
 import { IQuote } from "../models/quote.model";
 
 interface CryptocurrencyMapResponse {
@@ -64,7 +65,7 @@ const fetchIDMap = async (): Promise<CurrencyIdMap> => {
 export const getLatestQuotes = async (
   quoteCurrency: CurrencySymbols
 ): Promise<Array<IQuote>> => {
-  if (!ValidQuoteCurrenies.includes(quoteCurrency)) {
+  if (!ValidDefaultCurrenies.includes(quoteCurrency)) {
     throw new Error("Invalid quote currency");
   }
 

@@ -7,12 +7,8 @@ import {
   TradeType,
   Percent,
 } from "@uniswap/sdk-core";
-import {
-  CurrencySymbols,
-  CurrencyMeta,
-  Networks,
-  NetworksConfig,
-} from "../config";
+import { CurrencySymbols, CurrencyMeta } from "@stackupfinance/config";
+import { Networks, NetworksConfig } from "../config";
 import { getRPC } from "../utils";
 
 export interface OptimalQuote {

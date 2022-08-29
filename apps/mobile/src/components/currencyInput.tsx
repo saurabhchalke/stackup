@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {Input} from 'native-base';
 import {BigNumberish} from 'ethers';
+import {CurrencySymbols} from '@stackupfinance/config';
 import {
   formatCurrencyNoSymbol,
   parseCurrency,
   stringToValidFloat,
 } from '../utils/currency';
-import {CurrencySymbols} from '../config';
 
 type Props = {
   isDisabled?: boolean;

@@ -3,7 +3,9 @@ import {HStack, Pressable, Text, Image} from 'native-base';
 import hexToRgba from 'hex-to-rgba';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faChevronDown} from '@fortawesome/free-solid-svg-icons/faChevronDown';
-import {CurrencySymbols, CurrencyMeta, AppColors} from '../config';
+import {CurrencySymbols, CurrencyMeta} from '@stackupfinance/config';
+import {CurrencyLogos} from '.';
+import {AppColors} from '../config';
 
 type Props = {
   isDisabled?: boolean;
@@ -28,7 +30,7 @@ export const DropdownButton = ({isDisabled, currency, onPress}: Props) => {
           alignItems="center">
           <Image
             key={`dropdown-button-${currency}`}
-            source={CurrencyMeta[currency].logo}
+            source={CurrencyLogos[currency]}
             alt="dropdown-button-logo"
             w="32px"
             h="32px"

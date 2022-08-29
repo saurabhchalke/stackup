@@ -1,5 +1,6 @@
 import Quote, { IQuote } from "../models/quote.model";
-import { CurrencySymbols, ValidQuoteCurrenies, TimePeriod } from "../config";
+import { CurrencySymbols, ValidDefaultCurrenies } from "@stackupfinance/config";
+import { TimePeriod } from "../config";
 import { dateForTimePeriod } from "../utils";
 
 type CurrencyQuoteMap = Record<CurrencySymbols, number>;
@@ -24,7 +25,7 @@ export const getClosestQuotes = async (
   currencies: Array<CurrencySymbols>,
   timePeriod?: TimePeriod
 ): Promise<CurrencyQuoteMap> => {
-  if (!ValidQuoteCurrenies.includes(quoteCurrency)) {
+  if (!ValidDefaultCurrenies.includes(quoteCurrency)) {
     throw new Error("Invalid quote currency");
   }
 

@@ -1,16 +1,14 @@
 import React from 'react';
 import {Box, Button, Text} from 'native-base';
 import {ethers, BigNumberish} from 'ethers';
-import {BaseSheet} from '.';
-import {SwapSummary, SummaryTable} from '..';
 import {
   CurrencySymbols,
   CurrencyBalances,
-  OptimalQuote,
-  PaymasterStatus,
   CurrencyMeta,
-  AppColors,
-} from '../../config';
+} from '@stackupfinance/config';
+import {BaseSheet} from '.';
+import {SwapSummary, SummaryTable} from '..';
+import {OptimalQuote, PaymasterStatus, AppColors} from '../../config';
 import {formatRate, formatCurrency} from '../../utils/currency';
 
 type Props = {

@@ -1,7 +1,7 @@
 import create from 'zustand';
 import {devtools} from 'zustand/middleware';
 import {NavigationState as InitialNavigationState} from '@react-navigation/native';
-import {CurrencySymbols} from '../config';
+import {CurrencySymbols} from '@stackupfinance/config';
 
 interface Sheets {
   showSettingsSheet: boolean;

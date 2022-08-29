@@ -3,12 +3,12 @@ import {devtools} from 'zustand/middleware';
 import WalletConnect from '@walletconnect/client';
 import {ethers, BytesLike} from 'ethers';
 import {wallet, constants} from '@stackupfinance/walletjs';
+import {CurrencySymbols} from '@stackupfinance/config';
 import {
   Networks,
   NetworksConfig,
   SessionRequestPayload,
   CallRequestPayloads,
-  CurrencySymbols,
   EthSendTransactionPayload,
   PaymasterStatus,
   GasEstimate,

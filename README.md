@@ -50,6 +50,7 @@ Stackup is built from the combination of multiple apps. See the `README.md` file
 
 ### Shared libraries
 
+- [Config](./packages/config) - Shared configuration used across all Stackup apps.
 - [WalletJS](./packages/walletjs) - A library of helper functions for interacting with ERC-4337 accounts.
 
 # License

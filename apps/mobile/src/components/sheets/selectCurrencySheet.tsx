@@ -1,9 +1,9 @@
 import React from 'react';
 import {VStack} from 'native-base';
 import {BigNumberish} from 'ethers';
+import {CurrencySymbols} from '@stackupfinance/config';
 import {BaseSheet} from '.';
 import {SelectCurrencyItem} from '..';
-import {CurrencySymbols} from '../../config';
 
 type SelectCurrencyItem = {
   currency: CurrencySymbols;

@@ -1,5 +1,6 @@
 import {Amplitude} from '@amplitude/react-native';
-import {Env, CurrencySymbols, CallRequestPayloads} from '../config';
+import {CurrencySymbols} from '@stackupfinance/config';
+import {Env, CallRequestPayloads} from '../config';
 
 type Events = {
   JOIN_DISCORD: {screen: string};

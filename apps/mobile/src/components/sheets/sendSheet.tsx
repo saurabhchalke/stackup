@@ -3,13 +3,13 @@ import {Input, Box, VStack, Text, Button, useToast} from 'native-base';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCheck} from '@fortawesome/free-solid-svg-icons/faCheck';
 import {BigNumberish, ethers} from 'ethers';
-import {BaseSheet} from '.';
 import {
   CurrencySymbols,
   CurrencyBalances,
   CurrencyMeta,
-  AppColors,
-} from '../../config';
+} from '@stackupfinance/config';
+import {BaseSheet} from '.';
+import {AppColors} from '../../config';
 import {
   formatCurrency,
   parseCurrency,

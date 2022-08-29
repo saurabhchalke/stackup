@@ -1,10 +1,6 @@
 import { ethers, BigNumberish } from "ethers";
-import {
-  CurrencySymbols,
-  CurrencyMeta,
-  Networks,
-  NetworksConfig,
-} from "../config";
+import { CurrencySymbols, CurrencyMeta } from "@stackupfinance/config";
+import { Networks, NetworksConfig } from "../config";
 
 type AddressToCurrencyMap = Record<string, CurrencySymbols>;
 type AddressToCurrencyMapByNetwork = Partial<

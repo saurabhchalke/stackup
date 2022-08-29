@@ -3,9 +3,8 @@ import {persist, devtools} from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BigNumberish} from 'ethers';
 import axios from 'axios';
+import {CurrencySymbols, CurrencyList} from '@stackupfinance/config';
 import {
-  CurrencySymbols,
-  CurrencyList,
   Networks,
   TimePeriod,
   GasEstimate,
