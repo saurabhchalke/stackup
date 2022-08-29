@@ -3,11 +3,10 @@ import {devtools} from 'zustand/middleware';
 import axios from 'axios';
 import {ethers} from 'ethers';
 import {wallet, constants} from '@stackupfinance/walletjs';
-import {CurrencySymbols} from '@stackupfinance/config';
+import {CurrencySymbols, Networks} from '@stackupfinance/config';
 import {
   Env,
   GasEstimate,
-  Networks,
   NetworksConfig,
   PaymasterStatus,
   WalletStatus,

@@ -1,8 +1,8 @@
 import create from 'zustand';
 import {persist, devtools} from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {CurrencySymbols} from '@stackupfinance/config';
-import {Networks, TimePeriod} from '../config';
+import {CurrencySymbols, Networks} from '@stackupfinance/config';
+import {TimePeriod} from '../config';
 
 interface SettingsStateConstants {
   loading: boolean;

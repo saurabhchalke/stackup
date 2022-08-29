@@ -1,5 +1,5 @@
 import { constants } from "@stackupfinance/walletjs";
-import { Networks } from "../config";
+import { Networks } from "@stackupfinance/config";
 
 type Relay = {
   id: string;

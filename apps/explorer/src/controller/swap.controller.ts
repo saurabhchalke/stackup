@@ -1,8 +1,7 @@
 import httpStatus from "http-status";
 import { BigNumberish, ethers } from "ethers";
-import { CurrencySymbols } from "@stackupfinance/config";
+import { CurrencySymbols, Networks } from "@stackupfinance/config";
 import { catchAsync, ApiError } from "../utils";
-import { Networks } from "../config";
 import * as UniswapService from "../services/uniswap.service";
 
 export const quote = catchAsync(async (req, res) => {

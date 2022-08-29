@@ -1,6 +1,6 @@
 import { BigNumberish } from "ethers";
+import { Networks } from "@stackupfinance/config";
 import { catchAsync } from "../utils";
-import { Networks } from "../config";
 import * as BlocknativeService from "../services/blocknative.service";
 
 interface GetResponse {

@@ -1,6 +1,5 @@
 import { BigNumberish } from "ethers";
-import { CurrencySymbols } from "@stackupfinance/config";
-import { Networks } from "./network";
+import { CurrencySymbols, Networks } from "@stackupfinance/config";
 import { Env } from "./env";
 
 type AlchemyNetworks = "MATIC_MAINNET" | "MATIC_MUMBAI";

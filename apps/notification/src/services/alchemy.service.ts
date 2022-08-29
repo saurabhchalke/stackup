@@ -1,7 +1,6 @@
 import axios from "axios";
-import { CurrencyMeta } from "@stackupfinance/config";
+import { CurrencyMeta, Networks } from "@stackupfinance/config";
 import {
-  Networks,
   Env,
   AlchemyNetworkMap,
   AlchemyReverseNetworkMap,

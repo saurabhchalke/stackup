@@ -1,8 +1,8 @@
 import httpStatus from "http-status";
 import { constants } from "@stackupfinance/walletjs";
-import { CurrencyBalances } from "@stackupfinance/config";
+import { CurrencyBalances, Networks } from "@stackupfinance/config";
 import { ApiError, catchAsync } from "../utils";
-import { Env, Networks, DefaultFees } from "../config";
+import { Env, DefaultFees } from "../config";
 import * as AlchemyService from "../services/alchemy.service";
 import * as PaymasterService from "../services/paymaster.service";
 

@@ -1,10 +1,11 @@
 import dotenv from "dotenv";
+import { NodeEnvironment, NetworkEnvironment } from "@stackupfinance/config";
 
 dotenv.config();
 
 export interface AppEnvironment {
-  NODE_ENV: "production" | "development";
-  NETWORK_ENV: "mainnet" | "testnet";
+  NODE_ENV: NodeEnvironment;
+  NETWORK_ENV: NetworkEnvironment;
   NAME: string;
   PORT: number;
   MONGO_URL: string;

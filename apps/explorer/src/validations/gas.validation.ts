@@ -1,10 +1,10 @@
 import Joi from "joi";
-import { ValidNetworks } from "../config";
+import { NetworksList } from "@stackupfinance/config";
 
 export const estimator = {
   query: Joi.object().keys({
     network: Joi.string()
-      .valid(...ValidNetworks)
+      .valid(...NetworksList)
       .required(),
   }),
 };

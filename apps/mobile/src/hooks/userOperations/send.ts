@@ -1,8 +1,8 @@
 import {useState} from 'react';
 import {ethers, BigNumberish} from 'ethers';
 import {wallet, constants} from '@stackupfinance/walletjs';
-import {CurrencySymbols} from '@stackupfinance/config';
-import {Networks, Fee, NetworksConfig} from '../../config';
+import {CurrencySymbols, Networks} from '@stackupfinance/config';
+import {Fee, NetworksConfig} from '../../config';
 import {
   useBundlerStoreUserOpHooksSelector,
   useExplorerStoreUserOpHooksSelector,

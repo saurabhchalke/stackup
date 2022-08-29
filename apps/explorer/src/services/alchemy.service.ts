@@ -2,14 +2,8 @@ import axios from "axios";
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import { ethers, BigNumberish } from "ethers";
 import { contracts, wallet, constants } from "@stackupfinance/walletjs";
-import { CurrencySymbols } from "@stackupfinance/config";
-import {
-  Env,
-  Networks,
-  NetworksConfig,
-  WalletStatus,
-  WalletGuardians,
-} from "../config";
+import { CurrencySymbols, Networks } from "@stackupfinance/config";
+import { Env, NetworksConfig, WalletStatus, WalletGuardians } from "../config";
 import { getRPC } from "../utils";
 
 interface TokenBalanceResponse {

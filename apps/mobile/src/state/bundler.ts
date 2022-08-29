@@ -3,7 +3,8 @@ import {devtools} from 'zustand/middleware';
 import axios from 'axios';
 import {ethers} from 'ethers';
 import {constants, wallet} from '@stackupfinance/walletjs';
-import {Env, Networks, NetworksConfig, PaymasterStatus} from '../config';
+import {Networks} from '@stackupfinance/config';
+import {Env, NetworksConfig, PaymasterStatus} from '../config';
 
 interface PaymasterSignatureResponse {
   userOperations: Array<constants.userOperations.IUserOperation>;

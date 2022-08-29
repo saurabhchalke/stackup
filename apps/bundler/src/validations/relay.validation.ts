@@ -1,11 +1,11 @@
 import Joi from "joi";
+import { NetworksList } from "@stackupfinance/config";
 import UserOperationSchema from "./schemas/useroperations";
-import { ValidNetworks } from "../config";
 
 export const submit = {
   body: Joi.object().keys({
     network: Joi.string()
-      .valid(...ValidNetworks)
+      .valid(...NetworksList)
       .required(),
     userOperations: Joi.array().items(UserOperationSchema).required().min(1),
   }),

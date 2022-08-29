@@ -2,7 +2,8 @@ import React from 'react';
 import {VStack, Heading, Text} from 'native-base';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCircle} from '@fortawesome/free-solid-svg-icons/faCircle';
-import {HomeTabParamList, Networks, NetworksConfig} from '../config';
+import {Networks} from '@stackupfinance/config';
+import {HomeTabParamList, NetworksConfig} from '../config';
 
 type Props = {
   screen: keyof HomeTabParamList;

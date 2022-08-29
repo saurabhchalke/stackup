@@ -1,6 +1,7 @@
 import axios from "axios";
 import { ethers } from "ethers";
-import { Networks, NetworksConfig, ActivityItem, TimePeriod } from "../config";
+import { Networks } from "@stackupfinance/config";
+import { NetworksConfig, ActivityItem, TimePeriod } from "../config";
 import { getCurrencyFromAddress, dateForTimePeriod } from "../utils";
 
 interface BaseEtherscanResponse<R> {

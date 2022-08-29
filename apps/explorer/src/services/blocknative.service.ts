@@ -1,6 +1,7 @@
 import axios from "axios";
 import { ethers } from "ethers";
-import { Env, Networks, NetworksConfig } from "../config";
+import { Networks } from "@stackupfinance/config";
+import { Env, NetworksConfig } from "../config";
 
 interface BlockPrices {
   estimatedPrices: Array<{
@@ -19,7 +20,7 @@ export const getGasEstimate = async (network: Networks) => {
     "https://api.blocknative.com/gasprices/blockprices",
     {
       headers: { Authorization: Env.BLOCKNATIVE_API_KEY },
-      params: { chainid: NetworksConfig[network].chainId("mainnet") },
+      params: { chainid: NetworksConfig[network].mainnetChainId },
     }
   );
 

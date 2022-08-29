@@ -13,6 +13,7 @@ export * from './imageWithIconBadge';
 export * from './list';
 export * from './manageTokenItem';
 export * from './menuItem';
+export * from './networkLogos';
 export * from './noActivityItem';
 export * from './portfolioBalance';
 export * from './portfolioItem';

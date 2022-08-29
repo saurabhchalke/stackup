@@ -1,6 +1,7 @@
 import { ethers, ContractTransaction } from "ethers";
 import { constants, contracts } from "@stackupfinance/walletjs";
-import { Env, Networks } from "../config";
+import { Networks } from "@stackupfinance/config";
+import { Env } from "../config";
 import { getRPC } from "../utils";
 import Relay, { IRelay } from "../models/relayer.model";
 

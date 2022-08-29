@@ -1,7 +1,8 @@
 import httpStatus from "http-status";
 import { wallet } from "@stackupfinance/walletjs";
+import { DefaultNetwork } from "@stackupfinance/config";
 import { catchAsync, ApiError } from "../utils";
-import { PatchWalletInstance, DefaultNetwork } from "../config";
+import { PatchWalletInstance } from "../config";
 import * as WalletService from "../services/wallet.service";
 import * as VerificationService from "../services/verification.service";
 

@@ -5,10 +5,11 @@ import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import {useScanBarcodes, BarcodeFormat} from 'vision-camera-code-scanner';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faArrowRight} from '@fortawesome/free-solid-svg-icons/faArrowRight';
+import {Networks} from '@stackupfinance/config';
 import {BaseSheet} from '.';
 import {WalletConnectLogo} from '..';
 import {useHasChanged} from '../../hooks';
-import {AppColors, Networks, NetworksConfig} from '../../config';
+import {AppColors, NetworksConfig} from '../../config';
 
 type Props = {
   isOpen: boolean;

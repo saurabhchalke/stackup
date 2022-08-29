@@ -7,8 +7,12 @@ import {
   TradeType,
   Percent,
 } from "@uniswap/sdk-core";
-import { CurrencySymbols, CurrencyMeta } from "@stackupfinance/config";
-import { Networks, NetworksConfig } from "../config";
+import {
+  CurrencySymbols,
+  CurrencyMeta,
+  Networks,
+} from "@stackupfinance/config";
+import { NetworksConfig } from "../config";
 import { getRPC } from "../utils";
 
 export interface OptimalQuote {
@@ -28,7 +32,7 @@ const getRouter = (network: Networks) => {
   if (!routerInstances[network]) {
     const router = new AlphaRouter({
       chainId: ethers.BigNumber.from(
-        NetworksConfig[network].chainId()
+        NetworksConfig[network].chainId
       ).toNumber(),
       provider: new ethers.providers.JsonRpcProvider(getRPC(network)),
     });
@@ -46,7 +50,7 @@ export const getOptimalQuote = async (
   address: string
 ): Promise<OptimalQuote | null> => {
   const chainId = ethers.BigNumber.from(
-    NetworksConfig[network].chainId()
+    NetworksConfig[network].chainId
   ).toNumber();
   const baseToken =
     baseCurrency === NetworksConfig[network].nativeCurrency

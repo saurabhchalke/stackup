@@ -1,4 +1,5 @@
-import { Env, Networks } from "../config";
+import { Networks } from "@stackupfinance/config";
+import { Env } from "../config";
 
 export const getRPC = (network: Networks) => {
   switch (network) {

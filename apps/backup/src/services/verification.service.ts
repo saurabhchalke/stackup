@@ -1,6 +1,6 @@
 import { ethers, BytesLike } from "ethers";
 import { wallet, contracts } from "@stackupfinance/walletjs";
-import { Networks } from "../config";
+import { Networks } from "@stackupfinance/config";
 import { getRPC } from "../utils";
 
 const isTimestampExpired = (timestamp: number) => {

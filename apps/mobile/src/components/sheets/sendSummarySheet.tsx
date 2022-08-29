@@ -6,10 +6,11 @@ import {
   CurrencySymbols,
   CurrencyBalances,
   CurrencyMeta,
+  Networks,
 } from '@stackupfinance/config';
 import {BaseSheet} from '.';
 import {ImageWithIconBadge, SummaryTable, CurrencyLogos} from '..';
-import {Networks, NetworksConfig, AppColors, Fee} from '../../config';
+import {NetworksConfig, AppColors, Fee} from '../../config';
 import {formatCurrency} from '../../utils/currency';
 import {truncate} from '../../utils/address';
 

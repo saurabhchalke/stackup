@@ -1,7 +1,7 @@
 import { constants } from "@stackupfinance/walletjs";
+import { Networks } from "@stackupfinance/config";
 import { initJob } from "../queue";
 import { catchAsync, retryWithDelay } from "../utils";
-import { Networks } from "../config";
 import { IRelay } from "../models/relayer.model";
 import * as RelayService from "../services/relay.service";
 

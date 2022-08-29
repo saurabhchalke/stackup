@@ -1,7 +1,8 @@
 import Config from 'react-native-config';
+import {NetworkEnvironment} from '@stackupfinance/config';
 
 interface AppEnvironment {
-  NETWORK_ENV: 'mainnet' | 'testnet';
+  NETWORK_ENV: NetworkEnvironment;
   EXPLORER_URL: string;
   BACKUP_URL: string;
   BUNDLER_URL: string;

@@ -7,15 +7,11 @@ import {
   CurrencySymbols,
   CurrencyBalances,
   CurrencyMeta,
+  Networks,
 } from '@stackupfinance/config';
 import {BaseSheet} from '.';
 import {SummaryTable} from '..';
-import {
-  AppColors,
-  Networks,
-  NetworksConfig,
-  PaymasterStatus,
-} from '../../config';
+import {AppColors, NetworksConfig, PaymasterStatus} from '../../config';
 import {isValidEmail} from '../../utils/email';
 import {formatCurrency} from '../../utils/currency';
 

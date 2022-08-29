@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import toJSON from "@meanie/mongoose-to-json";
-import { Networks } from "../config";
+import { Networks } from "@stackupfinance/config";
 
 export interface IActivityWebhook {
   walletAddress: string;

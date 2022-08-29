@@ -4,7 +4,8 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faWallet} from '@fortawesome/free-solid-svg-icons/faWallet';
 import hexToRgba from 'hex-to-rgba';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {AppColors, Networks, NetworksConfig} from '../config';
+import {Networks} from '@stackupfinance/config';
+import {AppColors, NetworksConfig} from '../config';
 import {truncate} from '../utils/address';
 
 type Props = {

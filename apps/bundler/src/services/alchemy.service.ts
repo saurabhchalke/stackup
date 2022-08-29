@@ -1,7 +1,7 @@
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import { BigNumberish } from "ethers";
-import { CurrencySymbols } from "@stackupfinance/config";
-import { Env, Networks, NetworksConfig } from "../config";
+import { CurrencySymbols, Networks } from "@stackupfinance/config";
+import { Env, NetworksConfig } from "../config";
 
 const ALCHEMY_POLYGON_INSTANCE = createAlchemyWeb3(Env.ALCHEMY_POLYGON_RPC);
 

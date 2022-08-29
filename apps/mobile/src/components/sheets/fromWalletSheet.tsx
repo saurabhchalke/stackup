@@ -1,9 +1,9 @@
 import React from 'react';
 import {Box} from 'native-base';
 import {faArrowDown} from '@fortawesome/free-solid-svg-icons/faArrowDown';
+import {Networks} from '@stackupfinance/config';
 import {BaseSheet} from '.';
-import {ImageWithIconBadge, QRCode, WalletAddress} from '..';
-import {Networks, NetworksConfig} from '../../config';
+import {ImageWithIconBadge, QRCode, WalletAddress, NetworksLogos} from '..';
 
 type Props = {
   isOpen: boolean;
@@ -29,7 +29,7 @@ export const FromWalletSheet = ({
       <Box px="19px">
         <Box mt="30px" justifyContent="center" alignItems="center">
           <ImageWithIconBadge
-            source={NetworksConfig[network].logo}
+            source={NetworksLogos[network]}
             icon={faArrowDown}
           />
         </Box>

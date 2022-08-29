@@ -1,12 +1,11 @@
 import { BigNumberish, ethers } from "ethers";
 import { constants, wallet } from "@stackupfinance/walletjs";
-import { CurrencySymbols } from "@stackupfinance/config";
+import { CurrencySymbols, Networks } from "@stackupfinance/config";
 import {
   Env,
   DefaultFees,
   ERC20FunctionSignatures,
   NetworksConfig,
-  Networks,
 } from "../config";
 
 export const verifyUserOperations = (
