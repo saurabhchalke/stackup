@@ -29,7 +29,7 @@ function HomepageHeader() {
 
 export default function Home(): JSX.Element {
   return (
-    <Layout title="ERC-4337">
+    <Layout>
       <HomepageHeader />
       <main>
         <HomepageFeatures />
