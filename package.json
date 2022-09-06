@@ -6,7 +6,7 @@
   "license": "GPL-3.0",
   "private": true,
   "engines": {
-    "node": "^14"
+    "node": "^16"
   },
   "scripts": {
     "postinstall": "yarn workspace @stackupfinance/mobile run patch-package --exclude 'nothing'",
@@ -20,6 +20,7 @@
     "dev:backup:dependencies": "yarn workspace @stackupfinance/backup run dev:dependencies",
     "dev:bundler:dependencies": "yarn workspace @stackupfinance/bundler run dev:dependencies",
     "dev:notification:dependencies": "yarn workspace @stackupfinance/notification run dev:dependencies",
+    "dev:docs": "yarn workspace @stackupfinance/docs run start",
     "dev:explorer": "yarn workspace @stackupfinance/explorer run dev",
     "dev:backup": "yarn workspace @stackupfinance/backup run dev",
     "dev:bundler": "yarn workspace @stackupfinance/bundler run dev",

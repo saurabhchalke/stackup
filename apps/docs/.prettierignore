@@ -1,0 +1,11 @@
+node_modules
+build
+.docusaurus
+.gitkeep
+.gitignore
+.prettierignore
+**/*.jpeg
+**/*.png
+**/*.ico
+**/*.svg
+**/*.nojekyll
