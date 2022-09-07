@@ -131,6 +131,45 @@ const config = {
         ],
         copyright: `Copyright © ${new Date().getFullYear()} Stackup.`,
       },
+      metadata: [
+        {
+          property: "og:title",
+          content: "Stackup Developer Docs",
+        },
+        {
+          property: "og:type",
+          content: "website",
+        },
+        {
+          property: "og:image",
+          content: "https://i.imgur.com/hNJp1R1.png",
+        },
+        {
+          property: "og:url",
+          content: "https://docs.stackup.sh/",
+        },
+        {
+          property: "og:description",
+          content:
+            "Open source tools for building Web3 apps with account abstraction.",
+        },
+        {
+          property: "og:site_name",
+          content: "Stackup Developer Docs",
+        },
+        {
+          name: "twitter:card",
+          content: "summary_large_image",
+        },
+        {
+          name: "twitter:image:alt",
+          content: "Stackup logotype",
+        },
+        {
+          name: "twitter:site",
+          content: "@stackup_fi",
+        },
+      ],
       colorMode: {
         defaultMode: "dark",
       },
