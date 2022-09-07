@@ -41,7 +41,7 @@ An instance of `UserOperationBuilder` can help build a `UserOperation` that can 
 
 ```typescript
 interface UserOperationBuilder {
-  // `get` methods for specific fields.
+  // `get` methods.
   getSender: () => string;
   getNonce: () => BigNumberish;
   getInitCode: () => BytesLike;
@@ -54,8 +54,9 @@ interface UserOperationBuilder {
   getPaymaster: () => string;
   getPaymasterData: () => BytesLike;
   getSignature: () => BytesLike;
+  getOp: () => UserOperation;
 
-  // `set` methods allow fields to be set directly.
+  // `set` methods.
   setSender: (address: string) => UserOperationBuilder;
   setNonce: (nonce: BigNumberish) => UserOperationBuilder;
   setInitCode: (code: BytesLike) => UserOperationBuilder;
@@ -68,13 +69,19 @@ interface UserOperationBuilder {
   setPaymaster: (address: string) => UserOperationBuilder;
   setPaymasterData: (data: BytesLike) => UserOperationBuilder;
   setSignature: (bytes: BytesLike) => UserOperationBuilder;
+  setPartial: (partialOp: Partial<UserOperation>) => UserOperationBuilder;
+
+  // Sets the default values that won't be wiped on reset.
+  useDefaults: (partialOp: Partial<UserOperation>) => UserOperationBuilder;
+  resetDefaults: () => UserOperationBuilder;
 
   // Some fields may require arbitrary logic to build an op.
   // Middleware functions allow you to set custom logic for building op fragments.
   useMiddleware: (fn: UserOperationMiddlewareFn) => UserOperationBuilder;
-  resetMiddleware: () => void;
+  resetMiddleware: () => UserOperationBuilder;
 
   // This will construct a UserOperation that can be sent to a client.
+  // It will run through your entire middleware stack in the process.
   buildOp: (
     entryPoint: string,
     chainId: BigNumberish
@@ -100,21 +107,57 @@ interface UserOperationMiddlewareCtx {
 
 ---
 
-## Initialize
+## Usage
 
-The simplest way to use this package is to pass a configured builder to a client.
+```typescript
+const builder = new UserOperationBuilder().useDefaults({ sender, initCode });
+```
 
-```js
-const builder = new UserOperationBuilder();
+:::tip
 
-// Configure the builder and then pass to a client when ready to be sent.
-// The client will build, send, and reset the UserOperation.
-const result = await client.sendUserOperation({ builder });
+The `useDefaults` method will set fields that will persist after calling `resetOp`. This could be for fields like `sender` which you don't expect to change across different operations.
+
+:::
+
+---
+
+### Building a UserOperation
+
+A `UserOperation` is built using the `buildOp` method once it is properly configured. The easiest way to avoid passing around `EntryPoint` and `chainId` values is to [use the `client` as a director](./client.md#builduseroperation).
+
+```typescript
+// If you only want to build.
+const userOp = await client.buildUserOperation(builder);
+
+// If you want to build and send.
+const result = await client.sendUserOperation(builder);
+```
+
+:::info
+
+Using the above methods on a `client` to direct a `builder` will also call `resetOp` on success.
+
+:::
+
+Alternatively, if you want to control the build process:
+
+```typescript
+// Build op with the middleware stack.
+let userOp = await builder.buildOp(entryPoint, chainId);
+
+// Get latest built op. Will not use the middleware stack.
+userOp = await builder.getOp();
+
+// Send userOp to client node.
+const result = await client.sendUserOperation(userOp);
+
+// Reset op back to default values when you're done.
+builder.resetOp();
 ```
 
 ---
 
-## `get` and `set` Functions
+### `get` and `set` Functions
 
 These are basic getters and setters for all fields on a `UserOperation`. Getters return the field type whereas setters will return the instance to enable chaining.
 
@@ -122,11 +165,13 @@ For example:
 
 ```typescript
 const builder = new UserOperationBuilder()
-  .setSender(walletAddress)
-  .setInitCode(walletInitCode);
+  .setCallData(callData)
+  .setCallGas(callGas);
 ```
 
-## Middleware Functions
+---
+
+### Middleware Functions
 
 Some fragments on a `UserOperation` may depend on custom logic in order to be built. For example, based on your `Wallet` implementation there might be a specific way to fetch the `nonce` and sign an operation which aren't specified in the standard.
 
@@ -160,4 +205,36 @@ const builder = new UserOperationBuilder()
   .useMiddleware(fetchGasEstimate)
   .useMiddleware(getPaymasterApproval)
   .useMiddleware(signUserOperation);
+```
+
+---
+
+## Specific scenarios
+
+These are some suggested patterns to follow if you run into specific situations in your application.
+
+### Multi step builds
+
+There might be flows in your application where building a transaction happens over multiple pages, screens, or steps. Take a simple swap transaction for example:
+
+1. **First screen**: User selects the parameters of the swap and your application builds an `op`.
+2. **Second screen**: They'll select how to pay the fee. Your application then takes `op`, goes to the relevant paymaster, and creates `opWithFee`.
+3. **Third screen**: they'll confirm the transaction. Your application adds the signature to `opWithFee` and sends it to the `client`.
+
+In this case we can use multiple `builders` with the `setPartial` method in order to set multiple fields from the previous build.
+
+```typescript
+// Assume you have 3 configured builders for each screen in the example:
+// 1. baseBuilder
+// 2. feeBuilder
+// 3. sigBuilder
+
+// First screen
+const op = await client.buildUserOperation(baseBuilder);
+
+// Second screen
+const opWithFee = await client.buildUserOperation(feeBuilder.setPartial(op));
+
+// Third screen
+const result = await client.sendUserOperation(sigBuilder.setPartial(opWithFee));
 ```

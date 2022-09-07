@@ -15,7 +15,7 @@ An instance of a `ERC4337ClientRpc` is an abstraction to support the following R
 
 ## Interfaces
 
-This interface is built using [`UserOperation`](./useroperation.md#useroperation-1), [`UserOperationBuilder`](./useroperation.md#useroperationbuilder), and [`BigNumberish`](https://docs.ethers.io/v5/api/utils/bignumber/#BigNumberish) from [ethers.js](https://docs.ethers.io/).
+These interfaces are built using [`UserOperation`](./useroperation.md#useroperation-1), [`UserOperationBuilder`](./useroperation.md#useroperationbuilder), and [`BigNumberish`](https://docs.ethers.io/v5/api/utils/bignumber/#BigNumberish) from [ethers.js](https://docs.ethers.io/).
 
 ### ERC4337ClientRpc
 
@@ -24,27 +24,27 @@ An instance of `ERC4337ClientRpc` exposes methods to help get your `UserOperatio
 ```typescript
 interface ERC4337ClientRpc {
   // URL string to ERC-4337 client node.
-  url: string;
+  readonly url: string;
 
   // Chain ID of the EVM network ops are intended for.
   // See https://chainlist.org
-  chainId: BigNumberish;
+  readonly chainId: BigNumberish;
 
   sendUserOperation: (
-    opts: SendUserOperationOpts,
+    userOpOrBuilder: UserOpOrBuilder,
     id?: number
   ) => Promise<JSONRpcResponse<SendUserOperationResult>>;
+
+  buildUserOperation: (builder: UserOperationBuilder) => Promise<UserOperation>;
 
   supportedEntryPoints: (
     id?: number
   ) => Promise<JSONRpcResponse<SupportedEntryPointsResult>>;
+
+  setEntryPoint: (entryPoint: string) => Promise<ERC4337ClientRpc>;
 }
 
-interface SendUserOperationOpts {
-  builder?: UserOperationBuilder;
-  op?: UserOperation;
-  entryPoint?: string;
-}
+type UserOpOrBuilder = UserOperation | UserOperationBuilder;
 
 interface JSONRpcResponse<T> {
   id: number;
@@ -63,7 +63,7 @@ type SupportedEntryPointsResult = Array<string>;
 
 ---
 
-## Initialize
+## Usage
 
 One instance should be initialized for each node and network your application supports.
 
@@ -73,29 +73,51 @@ const client = new ERC4337ClientRpc(url, chainId);
 
 ---
 
-## sendUserOperation
+### sendUserOperation
 
-A helper function for calling `eth_sendUserOperation`. The optional `id` argument is for the RPC request and defaults to `1`.
+A method for calling `eth_sendUserOperation`. The optional `id` argument is for the RPC request and defaults to `1`.
 
-If a [`builder`](./useroperation.md#useroperationbuilder) is passed into `opts`, it will use the `buildOp` method to construct the `UserOperation`. If both `builder` and `op` is passed, the `builder` will take precedence.
+If a [`builder`](./useroperation.md#useroperationbuilder) is passed into `opOrBuilder`, it will use the `buildOp` method to construct the `UserOperation`. Otherwise the `UserOperation` is sent as is.
 
-If an `entryPoint` is not passed into `opts`, it will use the preferred address from `supportedEntryPoints`.
+```typescript
+const { id, result } = await client.sendUserOperation(userOpOrBuilder, id);
+```
 
-```js
-const { id, result } = await client.sendUserOperation(opts, id);
+:::info
+
+This method will call `resetOp` on a [`builder`](./useroperation.md#useroperationbuilder) on success.
+
+:::
+
+---
+
+### buildUserOperation
+
+This method can be used to direct a [`builder`](./useroperation.md#useroperationbuilder) using the client's `chainId` and set `EntryPoint`.
+
+:::info
+
+This method will call `resetOp` on a [`builder`](./useroperation.md#useroperationbuilder) on success.
+
+:::
+
+---
+
+### supportedEntryPoints
+
+A method for calling `eth_supportedEntryPoints`. The optional `id` argument is for the RPC request and defaults to `1`.
+
+The result is an array of `EntryPoint` addresses supported by the client. The first element is the client's preferred `EntryPoint`.
+
+```typescript
+const { id, result } = await client.supportedEntryPoints(id);
 ```
 
 ---
 
-## supportedEntryPoints
+### setEntryPoint
 
-A helper function for calling `eth_supportedEntryPoints`. The optional `id` argument is for the RPC request and defaults to `1`.
-
-The result is an array of `EntryPoint` addresses supported by the client. The first element is the client's preferred `EntryPoint`.
-
-```js
-const { id, result } = await client.supportedEntryPoints(id);
-```
+This method will switch the client to the specified `EntryPoint` address or throw an error if the address is not supported.
 
 ---
 
