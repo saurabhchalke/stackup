@@ -6,7 +6,7 @@ sidebar_position: 3
 
 A class for building ERC-4337 transaction objects.
 
-A [`UserOperation`](../../introduction/erc-4337-overview.md#useroperation) is a pseudo-transaction object used to execute actions through a smart contract wallet. Although it can be quite complex to create, the `UserOperationBuilder` simplifies this process using the [builder pattern](https://en.wikipedia.org/wiki/Builder_pattern). The interface is also agnostic to any ERC-4337 wallet implementation.
+A [`UserOperation`](../../introduction/erc-4337-overview.md#useroperation) is a pseudo-transaction object used to execute actions through a smart contract wallet. Although it can be quite complex to create, the `UserOperationBuilder` simplifies this process using the [builder pattern](https://en.wikipedia.org/wiki/Builder_pattern). The interface is also agnostic to any ERC-4337 wallet or paymaster implementation.
 
 ---
 
@@ -110,6 +110,8 @@ interface UserOperationMiddlewareCtx {
 ## Usage
 
 ```typescript
+import { UserOperationBuilder } from "packageName";
+
 const builder = new UserOperationBuilder().useDefaults({ sender, initCode });
 ```
 
@@ -135,7 +137,7 @@ const result = await client.sendUserOperation(builder);
 
 :::info
 
-Using the above methods on a `client` to direct a `builder` will also call `resetOp` on success.
+Using the above methods on a `client` to direct a `builder` will also call `resetOp` if successful.
 
 :::
 
@@ -219,7 +221,7 @@ There might be flows in your application where building a transaction happens ov
 
 1. **First screen**: User selects the parameters of the swap and your application builds an `op`.
 2. **Second screen**: They'll select how to pay the fee. Your application then takes `op`, goes to the relevant paymaster, and creates `opWithFee`.
-3. **Third screen**: they'll confirm the transaction. Your application adds the signature to `opWithFee` and sends it to the `client`.
+3. **Third screen**: They'll confirm the transaction. Your application adds the signature to `opWithFee` and sends it to the `client`.
 
 In this case we can use multiple `builders` with the `setPartial` method in order to set multiple fields from the previous build.
 

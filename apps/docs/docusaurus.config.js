@@ -126,6 +126,10 @@ const config = {
                 label: "GitHub",
                 href: "https://github.com/stackupfinance/stackup",
               },
+              {
+                label: "E-mail",
+                href: "mailto:founders@stackup.sh",
+              },
             ],
           },
         ],

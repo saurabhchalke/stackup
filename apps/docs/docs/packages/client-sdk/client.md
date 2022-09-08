@@ -68,6 +68,8 @@ type SupportedEntryPointsResult = Array<string>;
 One instance should be initialized for each node and network your application supports.
 
 ```js
+import { ERC4337ClientRpc } from "packageName";
+
 const client = new ERC4337ClientRpc(url, chainId);
 ```
 
@@ -85,7 +87,7 @@ const { id, result } = await client.sendUserOperation(userOpOrBuilder, id);
 
 :::info
 
-This method will call `resetOp` on a [`builder`](./useroperation.md#useroperationbuilder) on success.
+This method will also call `resetOp` on a [`builder`](./useroperation.md#useroperationbuilder) if successful.
 
 :::
 
@@ -93,11 +95,11 @@ This method will call `resetOp` on a [`builder`](./useroperation.md#useroperatio
 
 ### buildUserOperation
 
-This method can be used to direct a [`builder`](./useroperation.md#useroperationbuilder) using the client's `chainId` and set `EntryPoint`.
+This method can be used to direct a [`builder`](./useroperation.md#useroperationbuilder) using the client's `chainId` and set `EntryPoint`. However it will only return the `UserOperation` and not initiate a send request.
 
 :::info
 
-This method will call `resetOp` on a [`builder`](./useroperation.md#useroperationbuilder) on success.
+This method will also call `resetOp` on a [`builder`](./useroperation.md#useroperationbuilder) if successful.
 
 :::
 
