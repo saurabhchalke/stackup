@@ -6,7 +6,7 @@ sidebar_position: 3
 
 A class for building ERC-4337 transaction objects.
 
-A [`UserOperation`](../../introduction/erc-4337-overview.md#useroperation) is a pseudo-transaction object used to execute actions through a smart contract wallet. Although it can be quite complex to create, the `UserOperationBuilder` simplifies this process using the [builder pattern](https://en.wikipedia.org/wiki/Builder_pattern). The interface is also agnostic to any ERC-4337 wallet or paymaster implementation.
+A [`UserOperation`](../../introduction/erc-4337-overview/index.md#useroperation) is a pseudo-transaction object used to execute actions through a smart contract wallet. Although it can be quite complex to create, the `UserOperationBuilder` simplifies this process using the [builder pattern](https://en.wikipedia.org/wiki/Builder_pattern). The interface is also agnostic to any ERC-4337 wallet or paymaster implementation.
 
 ---
 
