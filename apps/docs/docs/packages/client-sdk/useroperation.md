@@ -6,7 +6,7 @@ sidebar_position: 3
 
 A class for building ERC-4337 transaction objects.
 
-A [`UserOperation`](../../introduction/erc-4337-overview/index.md#useroperation) is a pseudo-transaction object used to execute actions through a smart contract wallet. Although it can be quite complex to create, the `UserOperationBuilder` simplifies this process using the [builder pattern](https://en.wikipedia.org/wiki/Builder_pattern). The interface is also agnostic to any ERC-4337 wallet or paymaster implementation.
+A [`UserOperation`](../../introduction/erc-4337-overview.md#useroperation) is a pseudo-transaction object used to execute actions through a smart contract wallet. Although it can be quite complex to create, the `UserOperationBuilder` simplifies this process using the [builder pattern](https://en.wikipedia.org/wiki/Builder_pattern). The interface is also agnostic to any ERC-4337 wallet or paymaster implementation.
 
 ---
 
@@ -112,7 +112,7 @@ interface UserOperationMiddlewareCtx {
 ```typescript
 import { UserOperationBuilder } from "packageName";
 
-const builder = new UserOperationBuilder().useDefaults({ sender, initCode });
+const builder = new UserOperationBuilder().useDefaults({ sender });
 ```
 
 :::tip
@@ -147,8 +147,8 @@ Alternatively, if you want to control the build process:
 // Build op with the middleware stack.
 let userOp = await builder.buildOp(entryPoint, chainId);
 
-// Get latest built op. Will not use the middleware stack.
-userOp = await builder.getOp();
+// Or get the latest built op. Will not use the middleware stack.
+let userOp = await builder.getOp();
 
 // Send userOp to client node.
 const result = await client.sendUserOperation(userOp);
@@ -186,7 +186,7 @@ const fetchNonce = (provider) => async (ctx) => {
 };
 
 const fetchGasEstimate = async (ctx) => {
-  // Fetch gas estimate from provides like Blocknative.
+  // Fetch gas estimate from providers like Blocknative.
   return { maxFeePerGas, maxPriorityFeePerGas };
 };
 

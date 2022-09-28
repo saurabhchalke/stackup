@@ -37,7 +37,7 @@ All components of ERC-4337 revolve around a pseudo-transaction object called a `
 
 ## Architecture
 
-![ERC-4337 Architecture Simplified](../../../static/img/erc4337-architecture-simplified.png)
+![ERC-4337 Architecture Simplified](../../static/img/erc4337-architecture-simplified.png)
 
 Although highly simplified, the above diagram shows the interactions between all the different components of the standard. We'll get into details of each component below, but on a high level a `UserOperation` has the following life cycle.
 
@@ -71,7 +71,7 @@ Although a public P2P `UserOperation` mempool is still a work in progress, the a
 
 The `EntryPoint` is a contract that acts as a central entity for all ERC-4337 wallets and paymasters. It coordinates the verification and execution of a `UserOperation`. For this reason, it's important for all implementations of an `EntryPoint` to be audited and not controllable by any single entity.
 
-![ERC-4337 EntryPoint Sequence](../../../static/img/entrypoint-sequence.png)
+![ERC-4337 EntryPoint Sequence](../../static/img/entrypoint-sequence.png)
 
 The above sequence diagram shows how the `EntryPoint` handles a batch of `UserOperations` sent by the `Bundler`. Essentially there are 2 phases.
 

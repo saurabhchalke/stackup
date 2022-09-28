@@ -2,7 +2,9 @@
 sidebar_position: 2
 ---
 
-# Signatures
+# Validating signatures
+
+Why Contract Accounts need EIP-1271.
 
 A `Contract Account` enables arbitrary verification logic that can support multisig and any signature scheme. This is an advantage over an `EOA` which limits users to only ECDSA.
 
@@ -16,13 +18,13 @@ But let's say your smart contract is assigned an owner that holds an arbitrary p
 
 Let take a look at the example of signing up to an app like [OpenSea](https://opensea.io/) with a smart contract wallet like [Stackup](https://stackup.sh/). Below is the following flow that you're likely familiar with.
 
-![Signature validation example](../../../static/img/signature-validation-example.png)
+![Signature validation example](../../static/img/signature-validation-example.png)
 
 Here you are verifying that you own the account you are signing up with. And this is what happens under the hood:
 
-![Validating signatures with contracts](../../../static/img/validating-signatures-with-contracts.png)
+![Validating signatures with contracts](../../static/img/validating-signatures-with-contracts.png)
 
-Essentially, the contract has some logic to ensure that the message has been signed by the correct users or entities before approving anything.
+**Essentially, the contract has some logic to ensure that the message has been signed by the correct users or entities before approving anything.**
 
 ## A standard to ensure interoperability
 

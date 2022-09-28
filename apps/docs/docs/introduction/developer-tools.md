@@ -16,4 +16,5 @@ Come chat with us on [Discord](https://discord.gg/FpXmvKrNed) or [E-mail](mailto
 
 ## 📦 Open Source Packages
 
-- **[Client SDK](/docs/category/client-sdk)**: Frontend libraries for building and sending `UserOperations` to any standard client.
+- **[Client SDK](/docs/category/client-sdk)**: JavaScript library for building and sending `UserOperations` to any standard client.
+- **[Contracts](/docs/category/contracts)**: Modular Solidity libraries for creating ERC-4337 compliant `Wallets` and `Paymasters`.

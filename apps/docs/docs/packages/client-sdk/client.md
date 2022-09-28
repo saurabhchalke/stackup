@@ -23,7 +23,7 @@ An instance of `ERC4337ClientRpc` exposes methods to help get your `UserOperatio
 
 ```typescript
 interface ERC4337ClientRpc {
-  // URL string to ERC-4337 client node.
+  // URL string of ERC-4337 client node.
   readonly url: string;
 
   // Chain ID of the EVM network ops are intended for.
@@ -79,7 +79,7 @@ const client = new ERC4337ClientRpc(url, chainId);
 
 A method for calling `eth_sendUserOperation`. The optional `id` argument is for the RPC request and defaults to `1`.
 
-If a [`builder`](./useroperation.md#useroperationbuilder) is passed into `opOrBuilder`, it will use the `buildOp` method to construct the `UserOperation`. Otherwise the `UserOperation` is sent as is.
+If a [`builder`](./useroperation.md#useroperationbuilder) is passed into `userOpOrBuilder`, it will use the `buildOp` method to construct the `UserOperation`. Otherwise the `UserOperation` is sent as is.
 
 ```typescript
 const { id, result } = await client.sendUserOperation(userOpOrBuilder, id);
@@ -96,6 +96,10 @@ This method will also call `resetOp` on a [`builder`](./useroperation.md#userope
 ### buildUserOperation
 
 This method can be used to direct a [`builder`](./useroperation.md#useroperationbuilder) using the client's `chainId` and set `EntryPoint`. However it will only return the `UserOperation` and not initiate a send request.
+
+```typescript
+const userOp = await client.buildUserOperation(builder);
+```
 
 :::info
 

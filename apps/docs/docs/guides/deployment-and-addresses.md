@@ -2,9 +2,11 @@
 sidebar_position: 1
 ---
 
-# Deployment
+# Deployment and addresses
 
-A `Contract Account` can be programmed to support many different use cases for your users. In order for those use cases to be live, the `code` that implements it must be deployed to the EVM.
+An intro to the Contract Account code and address.
+
+A `Contract Account` can be programmed to support many different use cases for your users. In order for those use cases to be live, the `code` that implements it must be deployed to the EVM under it's own address.
 
 :::info
 
@@ -22,7 +24,7 @@ Every smart contract address has a `code` attached to it that implements the log
 const code = await provider.getCode(address);
 ```
 
-An ERC-4337 smart contract wallet is no different. Before the wallet can do common things, like verify a signature, its `code` must be deployed otherwise the EVM will not know how to handle the request. A quick way to check if a smart contract wallet is deployed is to verify if the `code` field is null or not:
+An ERC-4337 smart contract wallet is no different. Before the wallet can do common things, like validate a signature, its `code` must be deployed otherwise the EVM will not know how to handle the request. A quick way to check if a smart contract wallet is deployed is to verify if the `code` field is null or not:
 
 ```typescript
 const code = await provider.getCode(walletAddress);

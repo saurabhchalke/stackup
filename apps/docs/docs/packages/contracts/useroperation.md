@@ -1,0 +1,33 @@
+---
+sidebar_position: 3
+---
+
+# UserOperation
+
+The pseudo-transaction object for ERC-4337.
+
+## Type
+
+This type can be imported and used within any of your Solidity smart contracts to represent an ERC-4337 [`UserOperation`](../../introduction/erc-4337-overview.md#useroperation).
+
+```solidity
+import @PackageName/contracts/ERC4337/UserOperation.sol;
+```
+
+```solidity
+struct UserOperation {
+  address sender;
+  uint256 nonce;
+  bytes initCode;
+  bytes callData;
+  uint256 callGas;
+  uint256 verificationGas;
+  uint256 preVerificationGas;
+  uint256 maxFeePerGas;
+  uint256 maxPriorityFeePerGas;
+  address paymaster;
+  bytes paymasterData;
+  bytes signature;
+}
+
+```
