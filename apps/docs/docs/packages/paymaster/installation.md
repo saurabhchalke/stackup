@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Installation
 
-A guide for adding ERC-4337 contracts to your app.
+A guide to spinning up a paymaster to sponsor ops.
 
 :::caution
 
@@ -14,9 +14,9 @@ In the meantime, feel free the to read the docs and give us your feedback on [Di
 
 :::
 
-## Add dependencies
+## Automatic setup
 
-The Contracts library will be available in Solidity and hosted on NPM.
+The Paymaster will be available in JavaScript and hosted on NPM.
 
 :::caution
 
@@ -25,14 +25,8 @@ The Contracts library will be available in Solidity and hosted on NPM.
 :::
 
 ```bash
-npm install ...
+npx create ...
 
 # Or if using yarn
-yarn add ...
+yarn create ...
 ```
-
-:::info
-
-All implementations in this package uses UUPS Proxies for upgradeability. See the guide on [Proxy Patterns](../../guides/proxy-pattern.md) for more.
-
-:::

@@ -59,7 +59,7 @@ All `Base` implementations are also compatible with [ERC-1271](../../guides/vali
 
 :::tip
 
-These implementations will also encode signatures in specific ways depending on the scheme used. See the [`UserOperation` signature guide](../../guides/useroperation-signatures.mdx) for more details.
+These implementations will also encode signatures in specific ways depending on the scheme used. See the [`UserOperation` signature guide](../../guides/useroperation-signatures.md) for more details.
 
 :::
 

@@ -8,7 +8,7 @@ A quick overview of the standard for developers.
 
 :::info
 
-This EIP is expected to include updates in future iterations.
+This overview does not yet cover the `Aggregator`. The latest addition to the EIP to support aggregated signatures.
 
 :::
 
@@ -26,13 +26,12 @@ All components of ERC-4337 revolve around a pseudo-transaction object called a `
 | `nonce`                | `uint256` | Anti-replay protection                                                        |
 | `initCode`             | `bytes`   | Code used to deploy the wallet if not yet on-chain                            |
 | `callData`             | `bytes`   | Data that's passed to the `sender` for execution                              |
-| `callGas`              | `uint256` | Gas limit for execution step                                                  |
-| `verificationGas`      | `uint256` | Gas limit for verification step                                               |
+| `callGasLimit`         | `uint256` | Gas limit for execution phase                                                 |
+| `verificationGasLimit` | `uint256` | Gas limit for verification phase                                              |
 | `preVerificationGas`   | `uint256` | Gas to compensate the bundler                                                 |
 | `maxFeePerGas`         | `uint256` | Similar to EIP-1559 max fee                                                   |
 | `maxPriorityFeePerGas` | `uint256` | Similar to EIP-1559 priority fee                                              |
-| `paymaster`            | `address` | The address sponsoring the transaction                                        |
-| `paymasterData`        | `bytes`   | Data to be sent to `paymaster`                                                |
+| `paymasterAndData`     | `bytes`   | Paymaster address and any extra data required for verification and execution  |
 | `signature`            | `bytes`   | Used to validate a `UserOperation` along with the `nonce` during verification |
 
 ## Architecture

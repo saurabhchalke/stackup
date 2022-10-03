@@ -24,13 +24,12 @@ interface UserOperation {
   nonce: BigNumberish;
   initCode: BytesLike;
   callData: BytesLike;
-  callGas: BigNumberish;
-  verificationGas: BigNumberish;
+  callGasLimit: BigNumberish;
+  verificationGasLimit: BigNumberish;
   preVerificationGas: BigNumberish;
   maxFeePerGas: BigNumberish;
   maxPriorityFeePerGas: BigNumberish;
-  paymaster: string;
-  paymasterData: BytesLike;
+  paymasterAndData: BytesLike;
   signature: BytesLike;
 }
 ```
@@ -46,13 +45,12 @@ interface UserOperationBuilder {
   getNonce: () => BigNumberish;
   getInitCode: () => BytesLike;
   getCallData: () => BytesLike;
-  getCallGas: () => BigNumberish;
-  getVerificationGas: () => BigNumberish;
+  getCallGasLimit: () => BigNumberish;
+  getVerificationGasLimit: () => BigNumberish;
   getPreVerificationGas: () => BigNumberish;
   getMaxFeePerGas: () => BigNumberish;
   getMaxPriorityFeePerGas: () => BigNumberish;
-  getPaymaster: () => string;
-  getPaymasterData: () => BytesLike;
+  getPaymasterAndData: () => BytesLike;
   getSignature: () => BytesLike;
   getOp: () => UserOperation;
 
@@ -61,13 +59,13 @@ interface UserOperationBuilder {
   setNonce: (nonce: BigNumberish) => UserOperationBuilder;
   setInitCode: (code: BytesLike) => UserOperationBuilder;
   setCallData: (data: BytesLike) => UserOperationBuilder;
-  setCallGas: (gas: BigNumberish) => UserOperationBuilder;
-  setVerificationGas: (gas: BigNumberish) => UserOperationBuilder;
+  setCallGasLimit: (gas: BigNumberish) => UserOperationBuilder;
+  setVerificationGasLimit: (gas: BigNumberish) => UserOperationBuilder;
   setPreVerificationGas: (gas: BigNumberish) => UserOperationBuilder;
   setMaxFeePerGas: (fee: BigNumberish) => UserOperationBuilder;
   setMaxPriorityFeePerGas: (fee: BigNumberish) => UserOperationBuilder;
   setPaymaster: (address: string) => UserOperationBuilder;
-  setPaymasterData: (data: BytesLike) => UserOperationBuilder;
+  setPaymasterAndData: (data: BytesLike) => UserOperationBuilder;
   setSignature: (bytes: BytesLike) => UserOperationBuilder;
   setPartial: (partialOp: Partial<UserOperation>) => UserOperationBuilder;
 
@@ -168,7 +166,7 @@ For example:
 ```typescript
 const builder = new UserOperationBuilder()
   .setCallData(callData)
-  .setCallGas(callGas);
+  .setCallGasLimit(callGas);
 ```
 
 ---
@@ -192,7 +190,7 @@ const fetchGasEstimate = async (ctx) => {
 
 const getPaymasterApproval = async (ctx) => {
   // Fetch paymaster data.
-  return { paymaster, paymasterData };
+  return { PaymasterAndData };
 };
 
 const signUserOperation = async (ctx) => {

@@ -20,13 +20,12 @@ struct UserOperation {
   uint256 nonce;
   bytes initCode;
   bytes callData;
-  uint256 callGas;
-  uint256 verificationGas;
+  uint256 callGasLimit;
+  uint256 verificationGasLimit;
   uint256 preVerificationGas;
   uint256 maxFeePerGas;
   uint256 maxPriorityFeePerGas;
-  address paymaster;
-  bytes paymasterData;
+  bytes paymasterAndData;
   bytes signature;
 }
 

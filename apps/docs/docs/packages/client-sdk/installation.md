@@ -8,7 +8,7 @@ A guide for adding a Client SDK to your application.
 
 :::caution
 
-**🚧 This SDK is a work in progress**
+**🚧 This package is in a draft state**
 
 In the meantime, feel free the to read the docs and give us your feedback on [Discord](https://discord.gg/FpXmvKrNed)! 💬
 

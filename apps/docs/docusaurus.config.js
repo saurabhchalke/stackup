@@ -6,7 +6,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "Stackup Dev",
+  title: "Stackup Docs",
   tagline: "Open source tools for building Web3 apps with account abstraction.",
   url: "https://docs.stackup.sh",
   baseUrl: "/",
@@ -57,7 +57,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: "Stackup Dev",
+        title: "Stackup",
         logo: {
           alt: "Stackup Developer documentation",
           src: "img/logo.svg",

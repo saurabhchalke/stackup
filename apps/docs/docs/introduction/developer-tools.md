@@ -14,7 +14,11 @@ Come chat with us on [Discord](https://discord.gg/FpXmvKrNed) or [E-mail](mailto
 
 :::
 
-## 📦 Open Source Packages
+## 🚧 Open source packages in draft
 
-- **[Client SDK](/docs/category/client-sdk)**: JavaScript library for building and sending `UserOperations` to any standard client.
-- **[Contracts](/docs/category/contracts)**: Modular Solidity libraries for creating ERC-4337 compliant `Wallets` and `Paymasters`.
+**The design of the following packages are still under review and have yet to be released.**
+
+- **[Client SDK](/docs/category/client-sdk)**: JavaScript library for building and sending `UserOperations` to any standard RPC client.
+- **[Contracts](/docs/category/contracts)**: Modular Solidity libraries for creating compliant `Wallets` and `Paymasters`.
+- **[Client](/docs/category/client)**: A standalone RPC client and bundler for relaying `UserOperations` to the `EntryPoint`.
+- **[Paymaster](/docs/category/paymaster)**: A framework for handling custom fee logic on any received `UserOperation`.
