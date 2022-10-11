@@ -6,44 +6,34 @@ sidebar_position: 2
 
 Options to configure a standalone RPC client.
 
-The client can be configured either through a `.bundlerrc.json` file or using environment variables.
-
-## JSON options
-
-```json
-{
-  // Port to run the Client on.
-  "port": 3000,
-
-  // Connection string to a standard Ethereum node.
-  "rpcUrl": "",
-
-  // Array of EntryPoint addresses to support.
-  // The first address is the preferred EntryPoint.
-  // TODO: Add default address.
-  "supportedEntryPoints": [],
-
-  // A path to the file containing the mnemonic.
-  // This will be the EOA used to relay bundles to the EntryPoint.
-  // Make sure NOT to commit the file to version control.
-  "mnemonicPath": ".mnemonic",
-
-  // Address to send gas refunds for relaying bundlers.
-  // Will use the first account of the mnemonic by default.
-  "beneficiary": ""
-}
-```
+The client can be configured through environment variables. Some variables may be required while others are optional.
 
 ## Environment variables
 
+Required variables:
+
 ```bash
-STACKUP_BUNDLER_PORT=3000
+# Connection string to a standard Ethereum node.
+ERC4337_BUNDLER_RPC_URL
 
-STACKUP_BUNDLER_RPC_URL=
+# The private key for the EOA used to relay bundles to the EntryPoint.
+ERC4337_BUNDLER_PRIVATE_KEY
+```
 
-STACKUP_BUNDLER_SUPPORTED_ENTRY_POINTS=
+Optional variables:
 
-STACKUP_BUNDLER_MNEMONIC_PATH=
+```bash
+# Port to run the Client on.
+# Defaults to 4337
+ERC4337_BUNDLER_PORT
 
-STACKUP_BUNDLER_BENEFICIARY=
+# Comma separated EntryPoint addresses to support.
+# The first address is the preferred EntryPoint.
+# Defaults to 0x1b98F08dB8F12392EAE339674e568fe29929bC47
+ERC4337_BUNDLER_SUPPORTED_ENTRY_POINTS
+
+
+# Address to send gas refunds for relaying bundlers.
+# Defaults to the public address of the private key.
+ERC4337_BUNDLER_BENEFICIARY
 ```
