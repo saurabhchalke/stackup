@@ -237,7 +237,7 @@ const useWalletStore = create<WalletState>()(
               },
             );
 
-            set({loading: false});
+            set({loading: false, instance: {...instance, encryptedSigner: newEncryptedSigner}});
           } catch (error) {
             set({loading: false});
             throw error;
